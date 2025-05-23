@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 
-@Service
+/*@Service
 public class FirebaseStorageService {
     @Value("${firebase.bucket-name}")
     private String bucketName;
@@ -28,4 +28,4 @@ public class FirebaseStorageService {
         return "https://firebasestorage.googleapis.com/v0/b/" + bucketName +
                 "/o/" + fileName.replace("/", "%2F") + "?alt=media";
     }
-}
+}*/

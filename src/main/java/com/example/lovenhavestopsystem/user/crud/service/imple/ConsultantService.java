@@ -37,9 +37,9 @@ public class ConsultantService implements IConsultantService {
         ConsultantProfiles therapist = new ConsultantProfiles();
         therapist.setAccount(account);
         therapist.setBio(bio);
-        if (images != null && !images.isEmpty()) {
+        /*if (images != null && !images.isEmpty()) {
             imageService.uploadFiles(images, null, therapist.getId());
-        }
+        }*/
         consultantProfileRepository.save(therapist);
     }
 
