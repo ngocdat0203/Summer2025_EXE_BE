@@ -4,13 +4,14 @@ import com.example.lovenhavestopsystem.core.base.BaseMessage;
 import com.example.lovenhavestopsystem.core.exception.BadRequestException;
 import com.example.lovenhavestopsystem.user.crud.entity.Otp;
 import com.example.lovenhavestopsystem.user.crud.reposotory.IOtpRepository;
+import com.example.lovenhavestopsystem.user.crud.service.inter.IOtpService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Random;
 
 @Service
-public class OtpService {
+public class OtpService implements IOtpService {
     private final IOtpRepository otpRepo;
     private final Random random = new Random();
 
