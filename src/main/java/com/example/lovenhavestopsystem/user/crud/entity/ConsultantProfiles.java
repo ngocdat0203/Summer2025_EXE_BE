@@ -35,7 +35,7 @@ public class ConsultantProfiles extends BaseEntity {
     @JsonManagedReference
     private List<ServiceConsultant> serviceConsultants;
 
-    @OneToMany(mappedBy = "serviceConsultants",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "consultantProfiles",cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Image> images;
 }
