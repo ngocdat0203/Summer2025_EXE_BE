@@ -22,7 +22,7 @@ import java.util.List;
 
 @org.springframework.stereotype.Service
 public class ImageService implements IImageService {
-
+/*
     @Autowired
     private FirebaseStorageService firebaseStorageService;
 
@@ -91,5 +91,5 @@ public class ImageService implements IImageService {
         }
 
         return new ImageUploadResponseDTO(successList, failedFiles);
-    }
+    }*/
 }

@@ -7,6 +7,6 @@ import java.io.IOException;
 import java.util.List;
 
 public interface IImageService {
-    void uploadFiles(List<MultipartFile> files, Integer serviceId, Integer consultantId) throws IOException;
-    ImageUploadResponseDTO uploadFilesWithResponse(List<MultipartFile> files);
+/*    void uploadFiles(List<MultipartFile> files, Integer serviceId, Integer consultantId) throws IOException;
+    ImageUploadResponseDTO uploadFilesWithResponse(List<MultipartFile> files);*/
 }
