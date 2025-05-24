@@ -14,4 +14,6 @@ public interface IRoleRepository extends JpaRepository<Role, Integer> {
     List<Role> findByNameIn(List<RoleName> roles);
 
     List<Role> getRolesByNameIn(Collection<RoleName> names);
+    boolean existsByName(RoleName name);
+    void deleteByName(RoleName name);
 }
