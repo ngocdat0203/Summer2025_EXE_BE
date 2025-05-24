@@ -23,6 +23,7 @@ public class Role extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private RoleName name;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
