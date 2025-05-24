@@ -8,6 +8,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
+
+import java.util.HashMap;
 import java.util.Map;
 
 import org.thymeleaf.context.Context;
@@ -38,8 +40,12 @@ public class EmailService implements IEmailService {
 
     public void sendOtpEmail(String email, String otp) {
         String subject = BaseMessage.OTP_SUBJECT;
-        String body = BaseMessage.OTP_BODY + otp;
-        sendMail(email, subject, body);
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("otp", otp);
+
+        // Gửi mail với template Thymeleaf
+        sendMailWithThymeleafTemplate(email, subject, "sucess-email", model);
     }
 
     public void sendMailWithThymeleafTemplate(String to, String subject, String templateName, Map<String, Object> model) {
