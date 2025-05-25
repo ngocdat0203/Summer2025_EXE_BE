@@ -1,5 +1,6 @@
 package com.example.lovenhavestopsystem;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -8,6 +9,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class LoveHavenStopSystemApplication {
 
     public static void main(String[] args) {
+        Dotenv dotenv = Dotenv.configure()
+                .directory("./")
+                .load();
+        dotenv.entries().forEach(entry ->
+                System.setProperty(entry.getKey(), entry.getValue())
+        );
         SpringApplication.run(LoveHavenStopSystemApplication.class, args);
        /* BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
         String raw = "password123";
