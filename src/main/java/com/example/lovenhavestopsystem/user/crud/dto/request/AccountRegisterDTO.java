@@ -18,4 +18,7 @@ public class AccountRegisterDTO {
     @NotNull(message = BaseMessage.EMAIL_NOT_NULL)
     @Email(message = BaseMessage.EMAIL_INVALID)
     private String email;
+
+    private String name;
+
 }
