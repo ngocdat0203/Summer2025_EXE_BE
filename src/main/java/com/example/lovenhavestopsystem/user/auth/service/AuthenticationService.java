@@ -40,7 +40,7 @@ public class AuthenticationService {
         Account account = accountRepository.findByEmailAndDeletedTimeIsNull(loginDTO.getEmail());
         List<RoleName> roles = account.getRoles().stream().map(Role::getName).toList();
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(account.getId(), account.getEmail(), roles);
+            return jwtService.generateToken(account.getId(), account.getEmail(), roles, account.getFullName());
         } else {
             return BaseMessage.VERIFY_FAIL;
         }
