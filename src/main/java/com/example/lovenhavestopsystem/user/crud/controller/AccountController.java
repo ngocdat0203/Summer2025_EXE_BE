@@ -11,6 +11,7 @@ import com.example.lovenhavestopsystem.user.crud.entity.Account;
 import com.example.lovenhavestopsystem.user.crud.enums.Status;
 import com.example.lovenhavestopsystem.user.crud.service.imple.AccountService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class AccountController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<BaseResponse<Void>> register(@RequestBody AccountRegisterDTO accountRegisterDTO) {
+    public ResponseEntity<BaseResponse<Void>> register(@RequestBody @Valid AccountRegisterDTO accountRegisterDTO) {
         accountService.register(accountRegisterDTO);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new BaseResponse<>(HttpStatus.CREATED.value(), BaseMessage.REGISTER_SUCCESS));
