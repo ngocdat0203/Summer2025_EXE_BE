@@ -22,5 +22,4 @@ public class ConsultantProfilesDTO {
     private String name;
     private String phone;
     private String address;
-
 }

@@ -11,15 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountRegisterDTO {
-    @NotNull(message = BaseMessage.PASSWORD_NOT_NULL)
-    @Size(min = 8, message = BaseMessage.PASSWORD_MIN_LENGTH)
-    private String password;
-    @NotNull(message = BaseMessage.EMAIL_NOT_NULL)
-    @Email(message = BaseMessage.EMAIL_INVALID)
-    private String email;
-    private String name;
-    private String phone;
-    private String address;
-
+public class ConsultantRegisterDTO {
+    private AccountRegisterDTO accountRegisterDTO;
+    private String bio;
+    private String expertise;
 }
