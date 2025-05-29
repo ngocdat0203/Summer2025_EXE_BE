@@ -68,8 +68,10 @@ public class AccountService implements IAccountService {
         Account account = accountMapper.registerDtoToAccount(accountRegisterDTO);
         account.setPassword(encoder.encode(accountRegisterDTO.getPassword()));
         account.setEmail(accountRegisterDTO.getEmail());
-//        /*account.setUsername(accountRegisterDTO.getEmail());
-//        account.setStatus(Status.ACTIVE);*/
+        account.setFullName(accountRegisterDTO.getName());
+        account.setPhone(accountRegisterDTO.getPhone());
+        account.setAddress(accountRegisterDTO.getAddress());
+        account.setStatus(Status.ACTIVE);
 
         Role userRole = roleRepository.findByName(RoleName.USER);
 
