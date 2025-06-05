@@ -42,12 +42,13 @@ public class BlogService implements IBlogService {
     }
 
     @Override
-    public void createBlog(BlogRequestDTO blogRequestDTO, MultipartFile image) throws IOException {
+    public void createBlog(BlogRequestDTO blogRequestDTO) throws IOException {
         Account account = accountRepo.findById(blogRequestDTO.getAccountId())
                 .orElseThrow(() -> new NotFoundException(BaseMessage.NOT_FOUND));
 
         Blog blog = blogMapper.toEntity(blogRequestDTO);
         blog.setAccount(account);
+
 
         /*if (image != null) {
             validateImage(image);
@@ -59,7 +60,7 @@ public class BlogService implements IBlogService {
     }
 
     @Override
-    public void updateBlog(int blogId, BlogRequestDTO blogRequestDTO, MultipartFile image) throws IOException {
+    public void updateBlog(int blogId, BlogRequestDTO blogRequestDTO) throws IOException {
         Blog blog = blogRepo.findById(blogId)
                 .orElseThrow(() -> new NotFoundException(BaseMessage.NOT_FOUND));
 
@@ -67,6 +68,7 @@ public class BlogService implements IBlogService {
         blog.setHeadline(blogRequestDTO.getHeadline());
         blog.setSummary(blogRequestDTO.getSummary());
         blog.setContent(blogRequestDTO.getContent());
+        blog.setThumbnailUrl(blogRequestDTO.getThumbnailUrl());
 
         /*if (image != null) {
             validateImage(image);
