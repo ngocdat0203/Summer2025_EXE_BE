@@ -121,7 +121,7 @@ public class ConsultantService implements IConsultantService {
             consultantProfiles.getAccount().setPassword(dto.getPassword());
         }
         if (dto.getName() != null && !dto.getName().isEmpty()) {
-            consultantProfiles.getAccount().setFullName(dto.getName());
+            consultantProfiles.getAccount().setName(dto.getName());
         }
         if (dto.getPhone() != null && !dto.getPhone().isEmpty()) {
             consultantProfiles.getAccount().setPhone(dto.getPhone());
@@ -157,7 +157,7 @@ public class ConsultantService implements IConsultantService {
             consultantProfiles.getAccount().setPassword(dto.getPassword());
         }
         if (dto.getName() != null && !dto.getName().isEmpty()) {
-            consultantProfiles.getAccount().setFullName(dto.getName());
+            consultantProfiles.getAccount().setName(dto.getName());
         }
         if (dto.getPhone() != null && !dto.getPhone().isEmpty()) {
             consultantProfiles.getAccount().setPhone(dto.getPhone());
