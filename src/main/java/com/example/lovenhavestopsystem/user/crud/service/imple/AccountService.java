@@ -68,7 +68,7 @@ public class AccountService implements IAccountService {
         Account account = accountMapper.registerDtoToAccount(accountRegisterDTO);
         account.setPassword(encoder.encode(accountRegisterDTO.getPassword()));
         account.setEmail(accountRegisterDTO.getEmail());
-        account.setFullName(accountRegisterDTO.getName());
+        account.setName(accountRegisterDTO.getName());
         account.setPhone(accountRegisterDTO.getPhone());
         account.setAddress(accountRegisterDTO.getAddress());
         account.setUrlImage(accountRegisterDTO.getUrlImage());
@@ -93,7 +93,7 @@ public class AccountService implements IAccountService {
             account.setPassword(encoder.encode(dto.getPassword()));
         }
         if (dto.getName() != null && !dto.getName().isEmpty()) {
-            account.setFullName(dto.getName());
+            account.setName(dto.getName());
         }
         if (dto.getPhone() != null && !dto.getPhone().isEmpty()) {
             account.setPhone(dto.getPhone());
@@ -155,7 +155,7 @@ public class AccountService implements IAccountService {
 
         Account newAccount = accountMapper.createDtoToAccount(dto);
         newAccount.setEmail(dto.getEmail());
-        newAccount.setFullName(dto.getName());
+        newAccount.setName(dto.getName());
         newAccount.setPhone(dto.getPhone());
         newAccount.setAddress(dto.getAddress());
         newAccount.setStatus(Status.ACTIVE);
@@ -189,7 +189,7 @@ public class AccountService implements IAccountService {
             for (Account account : accounts) {
                 AccountCreateDTO accountCreateDTO = new AccountCreateDTO();
                 accountCreateDTO.setEmail(account.getEmail());
-                accountCreateDTO.setName(account.getFullName());
+                accountCreateDTO.setName(account.getName());
                 accountCreateDTO.setPhone(account.getPhone());
                 accountCreateDTO.setStatus(account.getStatus().toString());
                 accountCreateDTOS.add(accountCreateDTO);
