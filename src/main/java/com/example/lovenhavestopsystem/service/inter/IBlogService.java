@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.util.List;
 
 public interface IBlogService {
-    void createBlog(BlogRequestDTO blogRequestDTO, MultipartFile image) throws IOException;
-    void updateBlog(int blogId, BlogRequestDTO blogRequestDTO, MultipartFile image) throws IOException;
+    void createBlog(BlogRequestDTO blogRequestDTO) throws IOException;
+    void updateBlog(int blogId, BlogRequestDTO blogRequestDTO) throws IOException;
     void deleteBlog(int blogId);
     BlogResponseDTO getBlogById(int blogId);
     List<BlogResponseDTO> getAll();
