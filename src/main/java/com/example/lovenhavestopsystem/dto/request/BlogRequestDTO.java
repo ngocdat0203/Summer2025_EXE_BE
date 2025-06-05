@@ -16,4 +16,5 @@ public class BlogRequestDTO {
     private List<BlogContent> content;
     private String summary;
     private int accountId;
+    private String thumbnailUrl;
 }
