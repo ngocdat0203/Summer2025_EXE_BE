@@ -71,6 +71,7 @@ public class AccountService implements IAccountService {
         account.setFullName(accountRegisterDTO.getName());
         account.setPhone(accountRegisterDTO.getPhone());
         account.setAddress(accountRegisterDTO.getAddress());
+        account.setUrlImage(accountRegisterDTO.getUrlImage());
         account.setStatus(Status.ACTIVE);
 
         Role userRole = roleRepository.findByName(RoleName.USER);
