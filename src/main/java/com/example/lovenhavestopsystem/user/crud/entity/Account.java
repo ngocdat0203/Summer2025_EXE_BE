@@ -41,7 +41,7 @@ public class Account extends BaseEntity {
     @JsonManagedReference
     private List<Role> roles;
 
-    private String fullName;
+    private String name;
 
     private String phone;
 
