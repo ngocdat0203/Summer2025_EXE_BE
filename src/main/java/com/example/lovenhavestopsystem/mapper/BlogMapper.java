@@ -11,9 +11,9 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface BlogMapper {
     Blog toEntity(BlogRequestDTO dto);
-    @Mapping(source = "account.name", target = "authorName")
+    @Mapping(source = "account.fullName", target = "authorName")
     BlogResponseDTO toResponseDTO(Blog blog);
-    @Mapping(source = "account.name", target = "authorName")
+    @Mapping(source = "account.fullName", target = "authorName")
     List<BlogResponseDTO> toListResponseDTO(List<Blog> blog);
 }
 
