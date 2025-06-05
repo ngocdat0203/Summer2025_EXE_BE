@@ -23,26 +23,38 @@ public class BlogController {
         this.blogService = blogService;
     }
 
-    @PostMapping("/create")
+    /*@PostMapping("/create")
     public ResponseEntity<BaseResponse<Void>> create(
             @RequestPart String blog,
-            @RequestPart(required = false) MultipartFile image
+            @RequestBody(required = false) MultipartFile image
     ) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         BlogRequestDTO blogRequestDTO = objectMapper.readValue(blog, BlogRequestDTO.class);
-        blogService.createBlog(blogRequestDTO, image);
+        blogService.createBlog(blogRequestDTO);
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.CREATED.value(), BaseMessage.CREATE_SUCCESS));
+    }*/
+
+    @PostMapping("/create")
+    public ResponseEntity<BaseResponse<Void>> create(@RequestBody BlogRequestDTO blogRequestDTO) throws IOException {
+        blogService.createBlog(blogRequestDTO);
         return ResponseEntity.ok(new BaseResponse<>(HttpStatus.CREATED.value(), BaseMessage.CREATE_SUCCESS));
     }
 
-    @PutMapping("/update/{id}")
+
+    /*@PutMapping("/update/{id}")
     public ResponseEntity<BaseResponse<Void>> update(
             @PathVariable int id,
-            @RequestPart String blog,
-            @RequestPart(required = false) MultipartFile image
+            @RequestBody String blog
     ) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         BlogRequestDTO blogRequestDTO = objectMapper.readValue(blog, BlogRequestDTO.class);
-        blogService.updateBlog(id, blogRequestDTO, image);
+        blogService.updateBlog(id, blogRequestDTO);
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.UPDATE_SUCCESS));
+    }*/
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<BaseResponse<Void>> update(@PathVariable int id, @RequestBody BlogRequestDTO blogRequestDTO) throws IOException {
+        blogService.updateBlog(id, blogRequestDTO);
         return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.UPDATE_SUCCESS));
     }
 
