@@ -55,5 +55,8 @@ public class Account extends BaseEntity {
     private Status status;
 
 
+    private String urlImage;
+
+
 
 }

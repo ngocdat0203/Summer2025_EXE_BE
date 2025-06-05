@@ -13,6 +13,7 @@ import com.example.lovenhavestopsystem.user.crud.entity.ConsultantProfiles;
 import com.example.lovenhavestopsystem.user.crud.entity.Role;
 import com.example.lovenhavestopsystem.user.crud.enums.RoleName;
 import com.example.lovenhavestopsystem.user.crud.reposotory.IAccountRepository;
+import com.example.lovenhavestopsystem.user.crud.reposotory.IRoleRepository;
 import com.example.lovenhavestopsystem.user.crud.service.inter.IAccountService;
 import com.example.lovenhavestopsystem.user.crud.service.inter.IConsultantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class ConsultantService implements IConsultantService {
     private IAccountService accountService;
 
     @Autowired
+    private IRoleRepository roleRepo;
+
+    @Autowired
     private IConsultantProfileRepository consultantProfileRepository;
 
     @Autowired
@@ -54,6 +58,17 @@ public class ConsultantService implements IConsultantService {
 
         if (account.getRoles()!= null && account.getRoles().contains("CONSULTANT")) {
             throw new BadRequestException(BaseMessage.ALREADY_REGISTERED);
+        }
+
+        if(account.getRoles()!= null && account.getRoles().contains("USER")){
+
+            Role userRole = roleRepo.findByName(RoleName.CONSULTANT);
+
+            if (userRole == null) {
+                throw new NotFoundException(BaseMessage.NOT_FOUND);
+            }
+
+            account.setRoles(List.of(userRole));
         }
 
         ConsultantProfiles consultantProfiles = new ConsultantProfiles();
