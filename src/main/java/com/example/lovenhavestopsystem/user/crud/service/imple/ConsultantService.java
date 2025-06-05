@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -56,19 +57,22 @@ public class ConsultantService implements IConsultantService {
             throw new NotFoundException(BaseMessage.NOT_FOUND);
         }
 
-        if (account.getRoles()!= null && account.getRoles().contains("CONSULTANT")) {
+        if (account.getRoles() != null && account.getRoles().stream().anyMatch(role -> role.getName().equals(RoleName.CONSULTANT))) {
             throw new BadRequestException(BaseMessage.ALREADY_REGISTERED);
         }
 
-        if(account.getRoles()!= null && account.getRoles().contains("USER")){
+        if (account.getRoles() != null && account.getRoles().stream().anyMatch(role -> role.getName().equals(RoleName.USER))) {
+            Role consultantRole = roleRepo.findByName(RoleName.CONSULTANT);
 
-            Role userRole = roleRepo.findByName(RoleName.CONSULTANT);
-
-            if (userRole == null) {
+            if (consultantRole == null) {
                 throw new NotFoundException(BaseMessage.NOT_FOUND);
             }
 
-            account.setRoles(List.of(userRole));
+            // Create a mutable copy of the roles list
+            List<Role> roles = new ArrayList<>(account.getRoles());
+            roles.add(consultantRole);
+            account.setRoles(roles);
+            accountRepo.save(account);
         }
 
         ConsultantProfiles consultantProfiles = new ConsultantProfiles();
@@ -77,7 +81,6 @@ public class ConsultantService implements IConsultantService {
         consultantProfiles.setExpertise(consultantProfilesRegisterDTO.getExpertise());
 
         consultantProfileRepository.save(consultantProfiles);
-
     }
 
     @Override
