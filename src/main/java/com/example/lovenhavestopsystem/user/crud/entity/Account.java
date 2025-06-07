@@ -1,6 +1,8 @@
 package com.example.lovenhavestopsystem.user.crud.entity;
 
 import com.example.lovenhavestopsystem.core.base.BaseMessage;
+import com.example.lovenhavestopsystem.model.entity.ChatMessage;
+import com.example.lovenhavestopsystem.model.entity.Payment;
 import com.example.lovenhavestopsystem.user.crud.enums.Status;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -58,5 +60,10 @@ public class Account extends BaseEntity {
     private String urlImage;
 
 
+    @OneToMany(mappedBy = "sender")
+    private List<ChatMessage> sentMessages;
+
+    @OneToMany(mappedBy = "receiver")
+    private List<ChatMessage> receivedMessages;
 
 }
