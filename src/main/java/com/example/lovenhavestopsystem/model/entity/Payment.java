@@ -30,4 +30,8 @@ public class Payment extends BaseEntity {
     private LocalDateTime paidAt;
 
     private String method;
+
+    private String transactionCode;
+
+    private String status;
 }
