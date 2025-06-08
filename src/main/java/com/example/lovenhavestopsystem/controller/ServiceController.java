@@ -37,5 +37,9 @@ public class ServiceController {
     }
 
 
+    @GetMapping("/getAllPage")
+    public ResponseEntity<BaseResponse<?>> getAllPage(@RequestParam int page, @RequestParam int size) {
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS, iService.getAllIsNotDeletedServicePaging(page, size)));
+    }
 
 }
