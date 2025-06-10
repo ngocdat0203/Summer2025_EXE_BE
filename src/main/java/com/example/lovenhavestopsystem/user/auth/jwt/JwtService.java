@@ -41,7 +41,7 @@ public class JwtService {
     }
 
 
-    public String generateToken(int id, String email, List<RoleName> roles, String fullName) {
+    public String generateToken(int id, String email, List<RoleName> roles, String fullName, String address) {
 
 
         Map<String, Object> claims = new HashMap<>();
@@ -54,6 +54,7 @@ public class JwtService {
                 .claim("accountId", id)
                 .claim("roles", roles)
                 .claim("fullName", fullName)
+                .claim("adrress", address)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours
                 .signWith(getKey(), SignatureAlgorithm.HS256).compact();
