@@ -1,5 +1,6 @@
 package com.example.lovenhavestopsystem.user.auth.jwt;
 
+import com.example.lovenhavestopsystem.user.crud.entity.ConsultantProfiles;
 import com.example.lovenhavestopsystem.user.crud.enums.RoleName;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -41,7 +42,7 @@ public class JwtService {
     }
 
 
-    public String generateToken(int id, String email, List<RoleName> roles, String fullName, String address) {
+    public String generateToken(int id, String email, List<RoleName> roles, String fullName, String address, ConsultantProfiles consultantProfiles) {
 
 
         Map<String, Object> claims = new HashMap<>();
@@ -55,6 +56,7 @@ public class JwtService {
                 .claim("roles", roles)
                 .claim("fullName", fullName)
                 .claim("adrress", address)
+                .claim("consultantProfiles", consultantProfiles)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours
                 .signWith(getKey(), SignatureAlgorithm.HS256).compact();
