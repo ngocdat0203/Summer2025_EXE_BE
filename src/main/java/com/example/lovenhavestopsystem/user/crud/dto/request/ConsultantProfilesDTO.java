@@ -15,7 +15,6 @@ import java.util.List;
 public class ConsultantProfilesDTO {
     private String bio;
     private String expertise;
-    private Double rating;
     private int accountId;
     private List<Integer> imagesID;
     private String password;
