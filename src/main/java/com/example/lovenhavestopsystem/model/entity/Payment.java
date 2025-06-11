@@ -2,10 +2,7 @@ package com.example.lovenhavestopsystem.model.entity;
 
 import com.example.lovenhavestopsystem.core.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,9 +16,10 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "payment")
 public class Payment extends BaseEntity {
     @ManyToOne
-    @JoinColumn(name = "appointment_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "appointment_id", referencedColumnName = "id")
     @JsonManagedReference
     private Appointment appointment;
 
@@ -33,5 +31,13 @@ public class Payment extends BaseEntity {
 
     private String transactionCode;
 
-    private String status;
+    private String status; //Failed or Success
+
+    private String type; //Pay, Refund, Salary
+
+    private String fromAccount;
+
+    private String toAccount;
+
+    private String description;
 }
