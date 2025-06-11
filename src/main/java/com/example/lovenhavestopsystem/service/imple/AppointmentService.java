@@ -65,4 +65,8 @@ public class AppointmentService implements IAppointmentService {
         appointmentRepository.save(appointment);
     }
 
+    @Override
+    public List<Appointment> getAllAppointments() {
+        return appointmentRepository.findAll();
+    }
 }
