@@ -28,7 +28,7 @@ public class ConsultantProfiles extends BaseEntity {
     private String bio;
     private String expertise;
     private LocalDateTime approvedAt;
-    private Double rating;
+
 
 
     @OneToMany(mappedBy = "consultantProfiles",cascade = CascadeType.ALL)

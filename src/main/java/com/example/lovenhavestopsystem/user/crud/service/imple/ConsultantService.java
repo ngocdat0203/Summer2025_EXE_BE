@@ -132,6 +132,9 @@ public class ConsultantService implements IConsultantService {
         if (dto.getBio() != null && !dto.getBio().isEmpty()) {
             consultantProfiles.setBio(dto.getBio());
         }
+        if (dto.getAddress() != null && !dto.getAddress().isEmpty()) {
+            consultantProfiles.getAccount().setAddress(dto.getAddress());
+        }
 
 
         consultantProfileRepository.save(consultantProfiles);
@@ -167,6 +170,9 @@ public class ConsultantService implements IConsultantService {
         }
         if (dto.getBio() != null && !dto.getBio().isEmpty()) {
             consultantProfiles.setBio(dto.getBio());
+        }
+        if (dto.getAddress() != null && !dto.getAddress().isEmpty()) {
+            consultantProfiles.getAccount().setAddress(dto.getAddress());
         }
         consultantProfileRepository.save(consultantProfiles);
     }
