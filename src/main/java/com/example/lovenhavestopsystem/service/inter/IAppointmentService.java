@@ -7,7 +7,7 @@ import com.example.lovenhavestopsystem.model.enums.AppointmentStatus;
 import java.util.List;
 
 public interface IAppointmentService {
-    void createAppointment(AppointmentCreateDTO dto);
+    int createAppointment(AppointmentCreateDTO dto);
     List<Appointment> getByCustomerId(int id);
     List<Appointment> getByCity(String city);
     void updateAppointmentStatus(int id, AppointmentStatus status);
