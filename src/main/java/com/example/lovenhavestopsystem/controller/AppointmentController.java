@@ -23,8 +23,8 @@ public class AppointmentController {
 
     @PostMapping("/create")
     public ResponseEntity<BaseResponse<Integer>> createAppointment(@RequestBody AppointmentCreateDTO appointment) {
-        appointmentService.createAppointment(appointment);
-        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.CREATED.value(), BaseMessage.CREATE_SUCCESS));
+        //appointmentService.createAppointment(appointment);
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.CREATED.value(), BaseMessage.CREATE_SUCCESS, appointmentService.createAppointment(appointment)));
     }
 
     @GetMapping("/get-by-customer-id")
