@@ -31,7 +31,7 @@ public class AppointmentService implements IAppointmentService {
     }
 
     @Override
-    public void createAppointment(AppointmentCreateDTO dto) {
+    public int createAppointment(AppointmentCreateDTO dto) {
         Optional<Account> accountOptional = accountRepository.findById(dto.getAccountId());
         if(accountOptional.isEmpty()) {
             throw new BadRequestException("Account not found");
@@ -45,6 +45,7 @@ public class AppointmentService implements IAppointmentService {
         appointment.setService(serviceOptional.get());
         appointment.setStatus(AppointmentStatus.PENDING);
         appointmentRepository.save(appointment);
+        return appointment.getId();
     }
 
     @Override
