@@ -1,12 +1,16 @@
 package com.example.lovenhavestopsystem.service.inter;
 
-import com.example.lovenhavestopsystem.dto.request.PaymentCreateDTO;
-import com.example.lovenhavestopsystem.dto.response.PaymentResponseDTO;
-
-import java.util.List;
-
 public interface IPaymentService {
-    void createPayment(PaymentCreateDTO paymentCreateDTO);
-    List<PaymentResponseDTO> getLatestPayments();
+    void createPayment(int appointmentId,
+                       double amount,
+                       String method,
+                       String transactionCode,
+                       String status,
+                       String type,
+                       String from,
+                       String to,
+                       String description);
+
+    void updateStatus(String transactionCode, String status);
 }
 

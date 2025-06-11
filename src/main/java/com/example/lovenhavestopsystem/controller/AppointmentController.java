@@ -47,4 +47,9 @@ public class AppointmentController {
         appointmentService.updateAppointmentStatus(id, status);
         return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.UPDATE_SUCCESS));
     }
+
+    @GetMapping("/get-all")
+    public ResponseEntity<BaseResponse<List<Appointment>>> getAll() {
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS, appointmentService.getAllAppointments()));
+    }
 }

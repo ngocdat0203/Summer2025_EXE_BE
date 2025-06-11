@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface IPaymentRepository extends JpaRepository<Payment, Integer> {
-    List<Payment> findTop7ByOrderByCreatedTimeDesc();
+    Payment findByTransactionCode(String transactionCode);
 }
