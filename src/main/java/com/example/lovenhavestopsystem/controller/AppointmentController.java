@@ -52,4 +52,9 @@ public class AppointmentController {
     public ResponseEntity<BaseResponse<List<Appointment>>> getAll() {
         return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS, appointmentService.getAllAppointments()));
     }
+
+    @GetMapping("/get-by-consultant-id")
+    public ResponseEntity<BaseResponse<List<Appointment>>> getByConsultantId(@RequestParam int consultantId) {
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS, appointmentService.getAllAppointmentsByConsultantId(consultantId)));
+    }
 }
