@@ -3,6 +3,7 @@ package com.example.lovenhavestopsystem.model.entity;
 import com.example.lovenhavestopsystem.core.base.BaseEntity;
 import com.example.lovenhavestopsystem.user.crud.entity.Account;
 import com.example.lovenhavestopsystem.user.crud.entity.ConsultantProfiles;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,7 @@ import java.time.LocalDateTime;
 public class AppointmentAssignment extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "appointment_id", referencedColumnName = "id", nullable = false)
-    @JsonManagedReference
+    @JsonBackReference
     private Appointment appointment;
 
     @ManyToOne

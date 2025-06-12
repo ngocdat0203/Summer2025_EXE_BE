@@ -42,7 +42,7 @@ public class Appointment extends BaseEntity {
     private AppointmentStatus status; // PENDING, TAKEN, DONE, CANCELED
 
     @OneToOne(mappedBy = "appointment")
-    @JsonBackReference
+    @JsonManagedReference
     private AppointmentAssignment appointmentAssignment;
 
     @OneToMany(mappedBy = "appointment",cascade = CascadeType.ALL)
