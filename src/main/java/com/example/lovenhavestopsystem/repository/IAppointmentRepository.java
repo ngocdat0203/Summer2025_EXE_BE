@@ -12,4 +12,5 @@ public interface IAppointmentRepository extends JpaRepository<Appointment, Integ
     List<Appointment> getAllByCustomer_Id(int customer_id);
     List<Appointment> getAllByCity(String city);
     Appointment findByIdAndDeletedTimeIsNull(int id);
+    List<Appointment> findByAppointmentAssignment_Consultant_Id(int consultant_id);
 }

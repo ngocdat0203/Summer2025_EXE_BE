@@ -70,4 +70,9 @@ public class AppointmentService implements IAppointmentService {
     public List<Appointment> getAllAppointments() {
         return appointmentRepository.findAll();
     }
+
+    @Override
+    public List<Appointment> getAllAppointmentsByConsultantId(int id) {
+        return appointmentRepository.findByAppointmentAssignment_Consultant_Id(id);
+    }
 }
