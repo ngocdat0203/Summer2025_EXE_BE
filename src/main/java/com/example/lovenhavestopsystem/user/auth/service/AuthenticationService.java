@@ -26,27 +26,30 @@ public class AuthenticationService {
     @Autowired
     private JwtService jwtService;
 
-
-    /*public AuthenticationService(IAccountRepository accountRepository,AuthenticationManager authenticationManager, JwtService jwtService) {
-        this.accountRepository = accountRepository;
-        this.authenticationManager = authenticationManager;
-        this.jwtService = jwtService;
-
-    }*/
-
-    public String login (LoginDTO loginDTO) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+    public String login(LoginDTO loginDTO) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword())
+        );
 
         Account account = accountRepository.findByEmailAndDeletedTimeIsNull(loginDTO.getEmail());
         List<RoleName> roles = account.getRoles().stream().map(Role::getName).toList();
-        if (authentication.isAuthenticated()) {
-            // Check if the account is verified
 
-            return jwtService.generateToken(account.getId(), account.getEmail(), roles, account.getName(), account.getAddress(),account.getConsultantProfiles().getId());
+        if (authentication.isAuthenticated()) {
+            Integer consultantProfileId = null; // Default to null if not a consultant
+            if (account.getConsultantProfiles() != null) {
+                consultantProfileId = account.getConsultantProfiles().getId();
+            }
+
+            return jwtService.generateToken(
+                    account.getId(),
+                    account.getEmail(),
+                    roles,
+                    account.getName(),
+                    account.getAddress(),
+                    consultantProfileId // Pass null if not a consultant
+            );
         } else {
             return BaseMessage.VERIFY_FAIL;
         }
     }
-
-
 }
