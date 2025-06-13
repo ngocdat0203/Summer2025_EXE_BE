@@ -11,6 +11,7 @@ import com.example.lovenhavestopsystem.service.inter.IPaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -68,5 +69,10 @@ public class PaymentService implements IPaymentService {
         }
         payment.setStatus(status);
         paymentRepository.save(payment);
+    }
+
+    @Override
+    public List<Payment> getAllPayments() {
+        return paymentRepository.findAll();
     }
 }
