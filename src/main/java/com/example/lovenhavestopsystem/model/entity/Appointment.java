@@ -39,7 +39,7 @@ public class Appointment extends BaseEntity {
     private LocalDateTime preferredTime;
 
     @Enumerated(EnumType.STRING)
-    private AppointmentStatus status; // PENDING, TAKEN, DONE, CANCELED
+    private AppointmentStatus status;
 
     @OneToOne(mappedBy = "appointment")
     @JsonManagedReference
