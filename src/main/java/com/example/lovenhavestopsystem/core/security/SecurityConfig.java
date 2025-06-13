@@ -48,11 +48,20 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/chat-websocket/**").permitAll() // ← RẤT QUAN TRỌNG
-                        .anyRequest().permitAll()
+                        // ✅ Cho phép endpoint WebSocket
+                        .requestMatchers("/chat", "/chat/**", "/ws/**").permitAll()
+
+                        // ✅ Cho phép SockJS nếu dùng
+                        .requestMatchers("/sockjs/**", "/websocket/**").permitAll()
+
+                        // ✅ Cho phép các API public (nếu có thêm)
+                        .requestMatchers("/api/auth/**").permitAll()
+
+                        // ❗Nếu muốn bảo vệ các API khác
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // ← Bắt buộc cho WebSocket
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
                 .httpBasic(Customizer.withDefaults())
                 .oauth2Login(Customizer.withDefaults())
@@ -60,6 +69,7 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 
 
 
