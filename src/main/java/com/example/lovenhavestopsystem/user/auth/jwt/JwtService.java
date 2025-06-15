@@ -42,7 +42,7 @@ public class JwtService {
     }
 
 
-    public String generateToken(int id, String email, List<RoleName> roles, String fullName, String address, int consultantId) {
+    public String generateToken(int id, String email, List<RoleName> roles, String fullName, String address, Integer consultantId) {
 
 
         Map<String, Object> claims = new HashMap<>();
