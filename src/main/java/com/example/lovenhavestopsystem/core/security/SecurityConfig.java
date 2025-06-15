@@ -58,7 +58,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
 
                         // ❗Nếu muốn bảo vệ các API khác
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
+
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
