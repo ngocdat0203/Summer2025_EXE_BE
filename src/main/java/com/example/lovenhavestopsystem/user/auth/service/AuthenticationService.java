@@ -35,7 +35,7 @@ public class AuthenticationService {
         List<RoleName> roles = account.getRoles().stream().map(Role::getName).toList();
 
         if (authentication.isAuthenticated()) {
-            Integer consultantProfileId = null; // Default to null if not a consultant
+            int consultantProfileId = 0; // Default to 0 if not a consultant
             if (account.getConsultantProfiles() != null) {
                 consultantProfileId = account.getConsultantProfiles().getId();
             }
@@ -46,10 +46,11 @@ public class AuthenticationService {
                     roles,
                     account.getName(),
                     account.getAddress(),
-                    consultantProfileId // Pass null if not a consultant
+                    consultantProfileId
             );
         } else {
             return BaseMessage.VERIFY_FAIL;
         }
     }
+
 }
