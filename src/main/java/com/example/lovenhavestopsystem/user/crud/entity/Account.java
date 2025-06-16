@@ -66,4 +66,15 @@ public class Account extends BaseEntity {
     @OneToMany(mappedBy = "receiver")
     private List<ChatMessage> receivedMessages;
 
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + getId() +
+                ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
+
+
 }
