@@ -32,11 +32,11 @@ public class Service extends BaseEntity {
 
 
     @OneToMany(mappedBy = "service",cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonBackReference
     private List<ServiceConsultant> serviceConsultants;
 
     @OneToMany(mappedBy = "service",cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonBackReference
     private List<Image> images;
 
 
