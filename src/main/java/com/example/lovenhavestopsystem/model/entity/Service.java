@@ -27,16 +27,16 @@ public class Service extends BaseEntity {
     private Double pricePerHour;
 
     @OneToMany(mappedBy = "service",cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonBackReference
     private List<Appointment> appointments;
 
 
     @OneToMany(mappedBy = "service",cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonBackReference
     private List<ServiceConsultant> serviceConsultants;
 
     @OneToMany(mappedBy = "service",cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonBackReference
     private List<Image> images;
 
 
