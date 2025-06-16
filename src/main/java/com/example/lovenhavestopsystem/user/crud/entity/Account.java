@@ -43,10 +43,12 @@ public class Account extends BaseEntity {
     @JsonManagedReference
     private List<Role> roles;
 
+    @Column(columnDefinition = "NVARCHAR(255)")
     private String name;
 
     private String phone;
 
+    @Column(columnDefinition = "NVARCHAR(255)")
     private String address;
 
     @OneToOne(mappedBy = "account")
