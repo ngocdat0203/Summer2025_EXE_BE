@@ -5,19 +5,17 @@ import com.example.lovenhavestopsystem.model.entity.Image;
 import com.example.lovenhavestopsystem.model.entity.ServiceConsultant;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true, exclude = {"account", "serviceConsultants", "images"})
+@ToString(callSuper = true, exclude = {"account", "serviceConsultants", "images"})
 public class ConsultantProfiles extends BaseEntity {
 
     @OneToOne(cascade = CascadeType.ALL)

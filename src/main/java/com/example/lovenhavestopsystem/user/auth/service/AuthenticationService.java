@@ -9,6 +9,7 @@ import com.example.lovenhavestopsystem.user.crud.enums.RoleName;
 import com.example.lovenhavestopsystem.user.crud.reposotory.IAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Service
 public class AuthenticationService {
+
     @Autowired
     private IAccountRepository accountRepository;
 
@@ -27,20 +29,33 @@ public class AuthenticationService {
     private JwtService jwtService;
 
     public String login(LoginDTO loginDTO) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword())
-        );
+        try {
+            System.out.println("✅ Đang xác thực người dùng...");
 
-        Account account = accountRepository.findByEmailAndDeletedTimeIsNull(loginDTO.getEmail());
-        List<RoleName> roles = account.getRoles().stream().map(Role::getName).toList();
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword())
+            );
 
-        if (authentication.isAuthenticated()) {
-            int consultantProfileId = 0; // Default to 0 if not a consultant
-            if (account.getConsultantProfiles() != null) {
-                consultantProfileId = account.getConsultantProfiles().getId();
+            if (!authentication.isAuthenticated()) {
+                System.out.println("❌ Xác thực thất bại.");
+                return BaseMessage.VERIFY_FAIL;
             }
 
-            return jwtService.generateToken(
+            Account account = accountRepository.findByEmailAndDeletedTimeIsNull(loginDTO.getEmail());
+            if (account == null) {
+                System.out.println("❌ Không tìm thấy tài khoản.");
+                return BaseMessage.VERIFY_FAIL;
+            }
+
+            List<RoleName> roles = account.getRoles().stream()
+                    .map(Role::getName)
+                    .toList();
+
+            int consultantProfileId = account.getConsultantProfiles() != null
+                    ? account.getConsultantProfiles().getId()
+                    : 0;
+
+            String token = jwtService.generateToken(
                     account.getId(),
                     account.getEmail(),
                     roles,
@@ -48,9 +63,19 @@ public class AuthenticationService {
                     account.getAddress(),
                     consultantProfileId
             );
-        } else {
+
+
+            System.out.println("✅ Token sinh ra: " + token);
+
+            return token;
+
+        } catch (BadCredentialsException ex) {
+            System.out.println("❌ Sai email hoặc mật khẩu: " + ex.getMessage());
+            return BaseMessage.VERIFY_FAIL;
+        } catch (Exception ex) {
+            System.out.println("❌ Lỗi trong quá trình đăng nhập: " + ex.getMessage());
+            ex.printStackTrace(); // log lỗi chi tiết
             return BaseMessage.VERIFY_FAIL;
         }
     }
-
 }
