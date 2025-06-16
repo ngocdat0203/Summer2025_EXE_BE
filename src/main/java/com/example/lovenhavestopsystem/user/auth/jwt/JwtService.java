@@ -2,6 +2,7 @@ package com.example.lovenhavestopsystem.user.auth.jwt;
 
 import com.example.lovenhavestopsystem.user.crud.entity.ConsultantProfiles;
 import com.example.lovenhavestopsystem.user.crud.enums.RoleName;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.util.Value;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -54,37 +55,47 @@ public class JwtService {
 
 
     public String generateToken(int id, String email, List<RoleName> roles, String fullName, String address, int consultantId) {
+        try {
+            Map<String, Object> claims = new LinkedHashMap<>();
+            claims.put("id", id);
+            claims.put("email", email);
+            claims.put("roles", roles.stream().map(RoleName::name).toList());
+            claims.put("fullName", fullName);
+            claims.put("address", address);
+            /*
+            claims.put("fullName", "Kỷ Ôić");
+            claims.put("address", "Hồ Chí Minh");*/
+            claims.put("consultantId", consultantId > 0 ? consultantId : null);
+
+            // Thêm subject, issuedAt, expiration như các trường chuẩn
+            claims.put("sub", email);
+            claims.put("iat", System.currentTimeMillis() / 1000); // giây
+            claims.put("exp", (System.currentTimeMillis() + 1000 * 60 * 60 * 10) / 1000); // 10h sau
+
+            // Convert claims sang JSON UTF-8
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonPayload = objectMapper.writeValueAsString(claims);
+
+            // Build token với payload JSON tự set
+            String token = Jwts.builder()
+                    .setPayload(jsonPayload)
+                    .signWith(getKey(), SignatureAlgorithm.HS256)
+                    .compact();
+
+            logger.info("Generated token: {}", token);
+            System.out.println("✅ Full name: " + claims.get("fullName"));
+            System.out.println("✅ Address: " + claims.get("address"));
 
 
-        Map<String, Object> claims = new HashMap<>();
 
-        claims.put("id", id);
-        claims.put("email", email);
-        claims.put("roles", roles.stream().map(RoleName::name).toList());
-        claims.put("fullName", new String (fullName.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
-        claims.put("address", new String (address.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
-        if (consultantId > 0) {
-            claims.put("consultantId", consultantId);
-        } else {
-            claims.put("consultantId", null);
+            validateToken(token, new org.springframework.security.core.userdetails.User(email, "", new ArrayList<>()));
+
+            return token;
+
+        } catch (Exception e) {
+            logger.error("Lỗi khi tạo token: {}", e.getMessage(), e);
+            throw new RuntimeException("Không thể tạo JWT", e);
         }
-
-        String token = Jwts.builder()
-                .setClaims(claims)
-                .setSubject(email)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours
-                .signWith(getKey(), SignatureAlgorithm.HS256)
-                .compact();
-
-        logger.info("Generated token: {}", token);
-
-
-        validateToken(token, new org.springframework.security.core.userdetails.User(email, "", new ArrayList<>()));
-
-        return token;
-
-
     }
 
 

@@ -1,6 +1,7 @@
 package com.example.lovenhavestopsystem.user.auth.service;
 
 import com.example.lovenhavestopsystem.core.base.BaseMessage;
+import com.example.lovenhavestopsystem.core.exception.BadRequestException;
 import com.example.lovenhavestopsystem.user.auth.dto.LoginDTO;
 import com.example.lovenhavestopsystem.user.auth.jwt.JwtService;
 import com.example.lovenhavestopsystem.user.crud.entity.Account;
@@ -38,13 +39,13 @@ public class AuthenticationService {
 
             if (!authentication.isAuthenticated()) {
                 System.out.println("❌ Xác thực thất bại.");
-                return BaseMessage.VERIFY_FAIL;
+                throw new BadRequestException(BaseMessage.VERIFY_FAIL) ;
             }
 
             Account account = accountRepository.findByEmailAndDeletedTimeIsNull(loginDTO.getEmail());
             if (account == null) {
                 System.out.println("❌ Không tìm thấy tài khoản.");
-                return BaseMessage.VERIFY_FAIL;
+                throw new BadRequestException(BaseMessage.VERIFY_FAIL) ;
             }
 
             List<RoleName> roles = account.getRoles().stream()
