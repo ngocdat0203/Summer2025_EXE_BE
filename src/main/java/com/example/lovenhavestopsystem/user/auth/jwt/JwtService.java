@@ -61,8 +61,8 @@ public class JwtService {
         claims.put("id", id);
         claims.put("email", email);
         claims.put("roles", roles.stream().map(RoleName::name).toList());
-        claims.put("fullName", fullName);
-        claims.put("address", address);
+        claims.put("fullName", new String (fullName.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
+        claims.put("address", new String (address.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
         if (consultantId > 0) {
             claims.put("consultantId", consultantId);
         } else {
