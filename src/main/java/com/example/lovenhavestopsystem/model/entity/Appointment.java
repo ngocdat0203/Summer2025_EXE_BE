@@ -32,10 +32,10 @@ public class Appointment extends BaseEntity {
     @JsonManagedReference
     private Service service;
 
-    @Column(columnDefinition = "NVARCHAR(255)")
+    @Column(columnDefinition = "NVARCHAR(355)")
     private String address;
 
-    @Column(columnDefinition = "NVARCHAR(255)")
+    @Column(columnDefinition = "NVARCHAR(305)")
     private String city;
 
     private LocalDateTime preferredTime;
