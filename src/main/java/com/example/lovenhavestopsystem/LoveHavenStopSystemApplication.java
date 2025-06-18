@@ -24,10 +24,6 @@ public class LoveHavenStopSystemApplication {
         );
 
 
-        String rawPassword = "0979560506D@at"; // Mật khẩu gốc
-        String encodedPassword = encodePassword(rawPassword);
-        System.out.println("Mật khẩu đã mã hóa: " + encodedPassword);
-
 
 
 
@@ -45,9 +41,5 @@ public class LoveHavenStopSystemApplication {
     }
 
 
-    public static String encodePassword(String rawPassword) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        return encoder.encode(rawPassword);
-    }
 
 }
