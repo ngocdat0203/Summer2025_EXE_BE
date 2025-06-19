@@ -41,6 +41,7 @@ public class ServiceService implements IServiceService {
         service.setName(serviceRequestDTO.getName());
         service.setDescription(serviceRequestDTO.getDescription());
         service.setPricePerHour(serviceRequestDTO.getPricePerHour());
+        service.setImageUrl(serviceRequestDTO.getImageUrl());
 
 
         serviceRepository.save(service);
@@ -85,6 +86,7 @@ public class ServiceService implements IServiceService {
         service.setName(serviceDTO.getName());
         service.setDescription(serviceDTO.getDescription());
         service.setPricePerHour(serviceDTO.getPricePerHour());
+        service.setImageUrl(serviceDTO.getImageUrl());
         service.setLastUpdatedTime(LocalDateTime.now());
         serviceRepository.save(service);
 
