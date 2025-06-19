@@ -34,6 +34,7 @@ public class Rating extends BaseEntity {
 
     private int stars;
 
+    @Column(columnDefinition = "NVARCHAR(355)")
     private String comment;
 
     private LocalDateTime createdAt;

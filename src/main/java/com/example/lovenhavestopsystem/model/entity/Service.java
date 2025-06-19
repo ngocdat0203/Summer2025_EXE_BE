@@ -20,8 +20,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Service extends BaseEntity {
+    @Column(columnDefinition = "NVARCHAR(355)")
     private String name;
 
+    @Column(columnDefinition = "NVARCHAR(355)")
     private String description;
 
     private Double pricePerHour;
