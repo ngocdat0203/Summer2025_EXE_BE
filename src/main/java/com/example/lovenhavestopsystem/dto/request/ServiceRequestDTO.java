@@ -17,4 +17,5 @@ public class ServiceRequestDTO {
     private String description;
     private Double pricePerHour;
     private List<Integer> consultantProfileIds;
+    private String imageUrl;
 }
