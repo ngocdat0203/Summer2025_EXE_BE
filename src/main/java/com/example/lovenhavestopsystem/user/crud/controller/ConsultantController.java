@@ -5,6 +5,7 @@ import com.example.lovenhavestopsystem.core.base.BaseResponse;
 import com.example.lovenhavestopsystem.user.crud.dto.request.ConsultantProfilesDTO;
 import com.example.lovenhavestopsystem.user.crud.dto.request.ConsultantRegisterDTO;
 import com.example.lovenhavestopsystem.user.crud.entity.ConsultantProfiles;
+import com.example.lovenhavestopsystem.user.crud.enums.Status;
 import com.example.lovenhavestopsystem.user.crud.service.inter.IConsultantService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,4 +64,10 @@ public class ConsultantController {
                         consultantService.getConsultantByAccountId(accountId)));
     }
 
+    @PostMapping("update-consultant-status")
+    public ResponseEntity<BaseResponse<Void>> updateConsultantStatus(@RequestParam int id, @RequestParam Status status) {
+        consultantService.updateConsultantStatus(id, status);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.UPDATE_SUCCESS));
+    }
 }
