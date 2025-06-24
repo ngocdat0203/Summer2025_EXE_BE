@@ -41,10 +41,10 @@ public class Appointment extends BaseEntity {
     private LocalDateTime preferredTime;
 
     @Enumerated(EnumType.STRING)
-    private AppointmentStatus status; // PENDING, TAKEN, DONE, CANCELED
+    private AppointmentStatus status;
 
     @OneToOne(mappedBy = "appointment")
-    @JsonBackReference
+    @JsonManagedReference
     private AppointmentAssignment appointmentAssignment;
 
     @OneToMany(mappedBy = "appointment",cascade = CascadeType.ALL)

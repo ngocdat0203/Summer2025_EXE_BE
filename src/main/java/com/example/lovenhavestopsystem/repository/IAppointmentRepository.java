@@ -16,6 +16,7 @@ public interface IAppointmentRepository extends JpaRepository<Appointment, Integ
     List<Appointment> getAllByCity(String city);
     Appointment findByIdAndDeletedTimeIsNull(int id);
 
+
     @Query("""
     SELECT new com.example.lovenhavestopsystem.dto.response.PopularServiceDTO(
         a.service.id,
@@ -30,4 +31,6 @@ public interface IAppointmentRepository extends JpaRepository<Appointment, Integ
     List<PopularServiceDTO> findMostPopularService(Pageable pageable);
 
     List<Appointment> findAppointmentsByServiceId(int service_id);
+    List<Appointment> findByAppointmentAssignment_Consultant_Id(int consultant_id);
+
 }
