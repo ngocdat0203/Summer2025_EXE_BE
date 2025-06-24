@@ -12,6 +12,7 @@ import com.example.lovenhavestopsystem.user.crud.entity.Account;
 import com.example.lovenhavestopsystem.user.crud.entity.ConsultantProfiles;
 import com.example.lovenhavestopsystem.user.crud.entity.Role;
 import com.example.lovenhavestopsystem.user.crud.enums.RoleName;
+import com.example.lovenhavestopsystem.user.crud.enums.Status;
 import com.example.lovenhavestopsystem.user.crud.reposotory.IAccountRepository;
 import com.example.lovenhavestopsystem.user.crud.reposotory.IRoleRepository;
 import com.example.lovenhavestopsystem.user.crud.service.inter.IAccountService;
@@ -72,6 +73,7 @@ public class ConsultantService implements IConsultantService {
             List<Role> roles = new ArrayList<>(account.getRoles());
             roles.add(consultantRole);
             account.setRoles(roles);
+            account.setStatus(Status.INACTIVE);
             accountRepo.save(account);
         }
 
@@ -176,4 +178,23 @@ public class ConsultantService implements IConsultantService {
         }
         consultantProfileRepository.save(consultantProfiles);
     }
+
+    @Override
+    public void updateConsultantStatus(int consultantId, Status status) {
+        if (status == null) {
+            throw new BadRequestException("Status cannot be null");
+        }
+
+        ConsultantProfiles consultantProfile = consultantProfileRepository.findById(consultantId)
+                .orElseThrow(() -> new NotFoundException(BaseMessage.NOT_FOUND));
+
+        Account account = consultantProfile.getAccount();
+        if (account.getStatus() == status) {
+            throw new BadRequestException("Consultant is already in the requested status");
+        }
+
+        account.setStatus(status);
+        accountRepo.save(account); // Hoặc chỉ cần save consultantProfile nếu có Cascade
+    }
+
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/payment")
 public class PaymentController {
@@ -28,8 +29,14 @@ public class PaymentController {
         return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.UPDATE_SUCCESS));
     }
 
+
+    @GetMapping("/get-all-income")
+    public ResponseEntity<BaseResponse<?>> getAllIncome(@RequestParam int page, @RequestParam int size) {
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS, paymentService.getAllIncome()));
+
     @GetMapping("/get-all")
     public ResponseEntity<BaseResponse<List<Payment>>> getAll() {
         return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS, paymentService.getAllPayments()));
+
     }
 }

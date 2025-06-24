@@ -1,8 +1,11 @@
 package com.example.lovenhavestopsystem.repository;
 
+import com.example.lovenhavestopsystem.dto.response.PopularServiceDTO;
 import com.example.lovenhavestopsystem.model.entity.Appointment;
 import com.example.lovenhavestopsystem.user.crud.entity.Account;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,5 +15,22 @@ public interface IAppointmentRepository extends JpaRepository<Appointment, Integ
     List<Appointment> getAllByCustomer_Id(int customer_id);
     List<Appointment> getAllByCity(String city);
     Appointment findByIdAndDeletedTimeIsNull(int id);
+
+
+    @Query("""
+    SELECT new com.example.lovenhavestopsystem.dto.response.PopularServiceDTO(
+        a.service.id,
+        a.service.name,
+        COUNT(a)
+    )
+    FROM Appointment a
+    WHERE a.deletedTime IS NULL AND a.appointmentAssignment.isPaid = true
+    GROUP BY a.service.id, a.service.name
+    ORDER BY COUNT(a) DESC
+""")
+    List<PopularServiceDTO> findMostPopularService(Pageable pageable);
+
+    List<Appointment> findAppointmentsByServiceId(int service_id);
     List<Appointment> findByAppointmentAssignment_Consultant_Id(int consultant_id);
+
 }

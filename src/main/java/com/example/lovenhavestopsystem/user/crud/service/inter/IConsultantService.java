@@ -3,6 +3,7 @@ package com.example.lovenhavestopsystem.user.crud.service.inter;
 import com.example.lovenhavestopsystem.user.crud.dto.request.ConsultantProfilesDTO;
 import com.example.lovenhavestopsystem.user.crud.dto.request.ConsultantRegisterDTO;
 import com.example.lovenhavestopsystem.user.crud.entity.ConsultantProfiles;
+import com.example.lovenhavestopsystem.user.crud.enums.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,4 +26,6 @@ public interface IConsultantService {
 
 
     void updateConsultant(ConsultantProfilesDTO therapistInfoDTO) throws IOException;
+
+    void updateConsultantStatus(int consultantId, Status status) throws IOException;
 }

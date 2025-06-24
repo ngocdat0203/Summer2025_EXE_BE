@@ -16,6 +16,10 @@ public interface IPaymentService {
                        String description);
 
     void updateStatus(String transactionCode, String status);
+
+    double getAllIncome();
+
     List<Payment> getAllPayments();
+
 }
 
