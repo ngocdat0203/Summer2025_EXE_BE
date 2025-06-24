@@ -43,4 +43,10 @@ public class AppointmentAssignmentController {
                 BaseMessage.GET_SUCCESS,
                 service.getAssignmentByAppointmentId(appointmentId)));
     }
+    @GetMapping("/get-most-consulted")
+    public ResponseEntity<BaseResponse<List<AppointmentAssignment>>> getMostConsulted() {
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(),
+                BaseMessage.GET_SUCCESS,
+                service.getMostConsulted()));
+    }
 }

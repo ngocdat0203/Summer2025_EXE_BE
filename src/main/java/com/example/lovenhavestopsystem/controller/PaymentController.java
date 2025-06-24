@@ -6,10 +6,7 @@ import com.example.lovenhavestopsystem.model.enums.AppointmentStatus;
 import com.example.lovenhavestopsystem.service.inter.IPaymentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/payment")
@@ -25,5 +22,10 @@ public class PaymentController {
                                                                       @RequestParam String status) {
         paymentService.updateStatus(transactionCode, status);
         return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.UPDATE_SUCCESS));
+    }
+
+    @GetMapping("/get-all-income")
+    public ResponseEntity<BaseResponse<?>> getAllIncome(@RequestParam int page, @RequestParam int size) {
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS, paymentService.getAllIncome()));
     }
 }

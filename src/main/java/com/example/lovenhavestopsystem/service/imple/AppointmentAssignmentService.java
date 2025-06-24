@@ -1,6 +1,7 @@
 package com.example.lovenhavestopsystem.service.imple;
 
 import com.example.lovenhavestopsystem.core.exception.NotFoundException;
+import com.example.lovenhavestopsystem.dto.response.MostConsultantDTO;
 import com.example.lovenhavestopsystem.model.entity.Appointment;
 import com.example.lovenhavestopsystem.model.entity.AppointmentAssignment;
 import com.example.lovenhavestopsystem.model.enums.AppointmentStatus;
@@ -12,6 +13,7 @@ import com.example.lovenhavestopsystem.user.crud.entity.ConsultantProfiles;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -61,5 +63,31 @@ public class AppointmentAssignmentService implements IAppointmentAssignmentServi
     @Override
     public AppointmentAssignment getAssignmentByAppointmentId(int id) {
         return repo.findByAppointment_Id(id);
+    }
+
+    @Override
+    public MostConsultantDTO getMostConsulted() {
+        List<AppointmentAssignment> assignments = repo.findAll();
+        if (assignments.isEmpty()) {
+            throw new NotFoundException("No appointment assignments found");
+        }
+        ConsultantProfiles mostConsulted = null;
+        int maxCount = 0;
+        for (AppointmentAssignment assignment : assignments) {
+            ConsultantProfiles consultant = assignment.getConsultant();
+            int count = (int) assignments.stream().filter(a -> a.getConsultant().equals(consultant)).count();
+            if (count > maxCount) {
+                maxCount = count;
+                mostConsulted = consultant;
+            }
+        }
+        if (mostConsulted == null) {
+            throw new NotFoundException("No consultant found");
+        }
+        MostConsultantDTO mostConsultedDTO = new MostConsultantDTO();
+        mostConsultedDTO.setConsultantId(mostConsulted.getId());
+        mostConsultedDTO.setConsultantName(mostConsulted.getAccount().getName());
+        mostConsultedDTO.setUsageCount(maxCount);
+        return mostConsultedDTO;
     }
 }
