@@ -25,4 +25,6 @@ public interface IConsultantService {
 
 
     void updateConsultant(ConsultantProfilesDTO therapistInfoDTO) throws IOException;
+
+    void updateConsultantStatus(int accountId, String status) throws IOException;
 }

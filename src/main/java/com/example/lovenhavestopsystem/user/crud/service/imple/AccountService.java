@@ -11,11 +11,13 @@ import com.example.lovenhavestopsystem.user.crud.dto.request.AccountUpdateDTO;
 import com.example.lovenhavestopsystem.user.crud.dto.response.AccountInformationDTO;
 import com.example.lovenhavestopsystem.user.crud.entity.Account;
 import com.example.lovenhavestopsystem.user.crud.entity.Role;
+import com.example.lovenhavestopsystem.user.crud.entity.Wallet;
 import com.example.lovenhavestopsystem.user.crud.enums.RoleName;
 import com.example.lovenhavestopsystem.user.crud.enums.Status;
 import com.example.lovenhavestopsystem.user.crud.mapper.IAccountMapper;
 import com.example.lovenhavestopsystem.user.crud.reposotory.IAccountRepository;
 import com.example.lovenhavestopsystem.user.crud.reposotory.IRoleRepository;
+import com.example.lovenhavestopsystem.user.crud.reposotory.IWalletRepository;
 import com.example.lovenhavestopsystem.user.crud.service.inter.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -50,6 +52,9 @@ public class AccountService implements IAccountService {
     @Autowired
     private IConsultantProfileService consultantProfileService;
 
+    @Autowired
+    private IWalletRepository walletRepository;
+
 
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
@@ -74,11 +79,22 @@ public class AccountService implements IAccountService {
         account.setUrlImage(accountRegisterDTO.getUrlImage());
         account.setStatus(Status.ACTIVE);
 
+        Wallet wallet = new Wallet();
+        wallet.setBalance(0.0);
+
+        walletRepository.save(wallet);
+
+
+
+
+
         Role userRole = roleRepository.findByName(RoleName.USER);
 
         if (userRole == null) {
             throw new NotFoundException(BaseMessage.NOT_FOUND);
         }
+
+        account.setWallet(wallet);
 
         account.setRoles(List.of(userRole));
 

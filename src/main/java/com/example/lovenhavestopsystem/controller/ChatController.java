@@ -29,7 +29,7 @@ public class ChatController {
     }
 
 
-    @MessageMapping("/private-message")
+  /*  @MessageMapping("/private-message")
     public void sendPrivateMessage(@Payload ChatMessageDTO messageDTO) {
         System.out.println("===> Received message: " + messageDTO);
 
@@ -66,6 +66,6 @@ public class ChatController {
 
         List<ChatMessage> messages = chatMessageService.getRecentMessages(senderId, receiverId, page, size);
         return ResponseEntity.ok(messages);
-    }
+    }*/
 
 }

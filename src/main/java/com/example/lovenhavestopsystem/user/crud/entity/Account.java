@@ -2,7 +2,7 @@ package com.example.lovenhavestopsystem.user.crud.entity;
 
 import com.example.lovenhavestopsystem.core.base.BaseMessage;
 import com.example.lovenhavestopsystem.model.entity.ChatMessage;
-import com.example.lovenhavestopsystem.model.entity.Payment;
+import com.example.lovenhavestopsystem.model.entity.Conversation;
 import com.example.lovenhavestopsystem.user.crud.enums.Status;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -13,17 +13,19 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
+@Entity
 @Getter
 @Setter
-@AllArgsConstructor
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
-@Data
-@jakarta.persistence.Entity
+@AllArgsConstructor
 public class Account extends BaseEntity {
+
     @NotNull(message = BaseMessage.EMAIL_NOT_NULL)
     @Email(message = BaseMessage.EMAIL_INVALID)
     private String email;
@@ -58,9 +60,7 @@ public class Account extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-
     private String urlImage;
-
 
     @OneToMany(mappedBy = "sender")
     private List<ChatMessage> sentMessages;
@@ -68,15 +68,15 @@ public class Account extends BaseEntity {
     @OneToMany(mappedBy = "receiver")
     private List<ChatMessage> receivedMessages;
 
-    @Override
-    public String toString() {
-        return "Account{" +
-                "id=" + getId() +
-                ", email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                ", roles=" + roles +
-                '}';
-    }
+
+
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    private Wallet wallet;
+
+    @ManyToOne
+    @JoinColumn(name = "conversation_id", referencedColumnName = "id")
+    @JsonManagedReference
+    private Conversation conversation;
 
 
 }

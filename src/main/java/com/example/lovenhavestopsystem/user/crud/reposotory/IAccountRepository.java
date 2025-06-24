@@ -21,4 +21,6 @@ public interface IAccountRepository extends JpaRepository<Account, Integer> {
 
     @Query("SELECT a FROM Account a JOIN a.roles r WHERE r IN :roles")
     List<Account> getAccountsByListRole(List<Role> roles);
+
+    Account findByNameAndDeletedTimeIsNull(String name);
 }

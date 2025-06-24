@@ -2,7 +2,10 @@ package com.example.lovenhavestopsystem.service.imple;
 
 import com.example.lovenhavestopsystem.core.exception.BadRequestException;
 import com.example.lovenhavestopsystem.dto.request.ServiceRequestDTO;
+import com.example.lovenhavestopsystem.dto.response.PopularServiceDTO;
 import com.example.lovenhavestopsystem.model.entity.Service;
+import com.example.lovenhavestopsystem.repository.IAppointmentAssignmentRepo;
+import com.example.lovenhavestopsystem.repository.IAppointmentRepository;
 import com.example.lovenhavestopsystem.repository.IConsultantProfileRepository;
 import com.example.lovenhavestopsystem.repository.IServiceRepository;
 import com.example.lovenhavestopsystem.service.inter.IConsultantProfileService;
@@ -24,6 +27,10 @@ public class ServiceService implements IServiceService {
 
     @Autowired
     private IServiceRepository serviceRepository;
+
+    @Autowired
+    private IAppointmentRepository appointmentRepository;
+
 
     @Autowired
     private IServiceConsultantProfileService serviceConsultantProfileService;
@@ -99,6 +106,20 @@ public class ServiceService implements IServiceService {
 
         return serviceRepository.findAllByDeletedTimeIsNull(pageable);
     }
+
+
+    @Override
+    public PopularServiceDTO getMostPopularService() {
+        List<PopularServiceDTO> results = appointmentRepository.findMostPopularService(PageRequest.of(0, 1));
+
+        if (results.isEmpty()) {
+            throw new BadRequestException("No popular service found");
+        }
+
+        return results.get(0);
+    }
+
+
 
 
 }
