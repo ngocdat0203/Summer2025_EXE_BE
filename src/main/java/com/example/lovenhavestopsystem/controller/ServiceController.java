@@ -42,4 +42,8 @@ public class ServiceController {
         return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS, iService.getAllIsNotDeletedServicePaging(page, size)));
     }
 
+    @GetMapping("/getMostPopular")
+    public ResponseEntity<BaseResponse<?>> getMostPopular() {
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS, iService.getMostPopularService()));
+    }
 }
