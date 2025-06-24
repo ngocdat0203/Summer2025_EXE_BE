@@ -12,4 +12,5 @@ public interface IAppointmentService {
     List<Appointment> getByCity(String city);
     void updateAppointmentStatus(int id, AppointmentStatus status);
     List<Appointment> getAllAppointments();
+    List<Appointment> getAllAppointmentsByConsultantId(int id);
 }

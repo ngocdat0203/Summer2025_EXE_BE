@@ -9,6 +9,7 @@ import com.example.lovenhavestopsystem.repository.IAppointmentAssignmentRepo;
 import com.example.lovenhavestopsystem.repository.IAppointmentRepository;
 import com.example.lovenhavestopsystem.repository.IConsultantProfileRepository;
 import com.example.lovenhavestopsystem.service.inter.IAppointmentAssignmentService;
+import com.example.lovenhavestopsystem.service.inter.IAppointmentService;
 import com.example.lovenhavestopsystem.user.crud.entity.ConsultantProfiles;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +22,13 @@ public class AppointmentAssignmentService implements IAppointmentAssignmentServi
     private final IAppointmentAssignmentRepo repo;
     private final IAppointmentRepository appointmentRepo;
     private final IConsultantProfileRepository consultantProfileRepo;
+    private final IAppointmentService appointmentService;
 
-    public AppointmentAssignmentService(IAppointmentAssignmentRepo repo, IAppointmentRepository appointmentRepo, IConsultantProfileRepository consultantProfileRepo) {
+    public AppointmentAssignmentService(IAppointmentAssignmentRepo repo, IAppointmentRepository appointmentRepo, IConsultantProfileRepository consultantProfileRepo, IAppointmentService appointmentService) {
         this.repo = repo;
         this.appointmentRepo = appointmentRepo;
         this.consultantProfileRepo = consultantProfileRepo;
+        this.appointmentService = appointmentService;
     }
 
 
@@ -56,9 +59,9 @@ public class AppointmentAssignmentService implements IAppointmentAssignmentServi
         assignment.setStartTime(startTime);
         assignment.setEndTime(endTime);
         repo.save(assignment);
+        int appointmentId = assignment.getAppointment().getId();
+        appointmentService.updateAppointmentStatus(appointmentId, AppointmentStatus.COMPLETED);
     }
-
-
 
     @Override
     public AppointmentAssignment getAssignmentByAppointmentId(int id) {
