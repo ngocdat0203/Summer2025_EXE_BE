@@ -72,7 +72,16 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
+    public double getAllIncome() {
+        List<Payment> payments = paymentRepository.findAll();
+        return payments.stream()
+                .filter(payment -> "Success".equalsIgnoreCase(payment.getStatus()) && "Pay".equalsIgnoreCase(payment.getType()))
+                .mapToDouble(Payment::getAmount)
+                .sum();
+    }
+   @Override
     public List<Payment> getAllPayments() {
         return paymentRepository.findAll();
+
     }
 }

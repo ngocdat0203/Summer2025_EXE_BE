@@ -2,7 +2,9 @@ package com.example.lovenhavestopsystem.service.imple;
 
 import com.example.lovenhavestopsystem.core.exception.BadRequestException;
 import com.example.lovenhavestopsystem.dto.request.ServiceRequestDTO;
+import com.example.lovenhavestopsystem.dto.response.PopularServiceDTO;
 import com.example.lovenhavestopsystem.model.entity.Service;
+import com.example.lovenhavestopsystem.repository.IAppointmentRepository;
 import com.example.lovenhavestopsystem.repository.IConsultantProfileRepository;
 import com.example.lovenhavestopsystem.repository.IServiceRepository;
 import com.example.lovenhavestopsystem.service.inter.IConsultantProfileService;
@@ -27,6 +29,9 @@ public class ServiceService implements IServiceService {
 
     @Autowired
     private IServiceConsultantProfileService serviceConsultantProfileService;
+
+    @Autowired
+    private IAppointmentRepository appointmentRepository;
 
     @Override
     public boolean create(ServiceRequestDTO serviceRequestDTO) {
@@ -99,6 +104,39 @@ public class ServiceService implements IServiceService {
 
         return serviceRepository.findAllByDeletedTimeIsNull(pageable);
     }
+
+    @Override
+    public PopularServiceDTO getMostPopularService() {
+        List<Service> allServices = serviceRepository.findAll();
+        Service mostPopularService = null;
+        int maxCount = 0;
+
+        for (Service service : allServices) {
+            if (service.getDeletedTime() != null) {
+                continue; // Bỏ qua dịch vụ đã bị xóa mềm
+            }
+
+            List<Appointment> appointments = appointmentRepository.findAppointmentsByServiceId(service.getId());
+            int count = appointments.size();
+
+            if (count > maxCount) {
+                maxCount = count;
+                mostPopularService = service;
+            }
+        }
+
+        if (mostPopularService == null) {
+            throw new BadRequestException("No popular service found");
+        }
+
+        PopularServiceDTO popularService = new PopularServiceDTO();
+        popularService.setServiceId(mostPopularService.getId());
+        popularService.setServiceName(mostPopularService.getName()); // nếu DTO có tên
+        popularService.setUsageCount(maxCount);
+
+        return popularService;
+    }
+
 
 
 }
