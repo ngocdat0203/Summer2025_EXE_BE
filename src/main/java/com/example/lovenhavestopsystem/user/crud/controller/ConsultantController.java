@@ -65,7 +65,7 @@ public class ConsultantController {
     }
 
     @PostMapping("update-consultant-status")
-    public ResponseEntity<BaseResponse<Void>> updateConsultantStatus(@RequestParam int id, @RequestParam Status status) {
+    public ResponseEntity<BaseResponse<Void>> updateConsultantStatus(@RequestParam int id, @RequestParam Status status) throws IOException {
         consultantService.updateConsultantStatus(id, status);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.UPDATE_SUCCESS));
