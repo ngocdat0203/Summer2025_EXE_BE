@@ -7,6 +7,7 @@ import com.example.lovenhavestopsystem.user.auth.jwt.JwtService;
 import com.example.lovenhavestopsystem.user.crud.entity.Account;
 import com.example.lovenhavestopsystem.user.crud.entity.Role;
 import com.example.lovenhavestopsystem.user.crud.enums.RoleName;
+import com.example.lovenhavestopsystem.user.crud.enums.Status;
 import com.example.lovenhavestopsystem.user.crud.reposotory.IAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -46,6 +47,11 @@ public class AuthenticationService {
             if (account == null) {
                 System.out.println("❌ Không tìm thấy tài khoản.");
                 throw new BadRequestException(BaseMessage.VERIFY_FAIL) ;
+            }
+
+            if(account.getStatus() == null || account.getStatus().equals(Status.INACTIVE)) {
+                System.out.println("❌ Tài khoản không hoạt động.");
+                throw new BadRequestException(BaseMessage.ACCOUNT_DOES_NOT_CHECKED);
             }
 
             List<RoleName> roles = account.getRoles().stream()
