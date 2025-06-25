@@ -3,6 +3,7 @@ package com.example.lovenhavestopsystem.controller;
 import com.example.lovenhavestopsystem.core.base.BaseMessage;
 import com.example.lovenhavestopsystem.core.base.BaseResponse;
 import com.example.lovenhavestopsystem.dto.request.AppointmentCreateDTO;
+import com.example.lovenhavestopsystem.dto.response.MostConsultantDTO;
 import com.example.lovenhavestopsystem.model.entity.Appointment;
 import com.example.lovenhavestopsystem.model.entity.AppointmentAssignment;
 import com.example.lovenhavestopsystem.model.enums.AppointmentStatus;
@@ -44,7 +45,7 @@ public class AppointmentAssignmentController {
                 service.getAssignmentByAppointmentId(appointmentId)));
     }
     @GetMapping("/get-most-consulted")
-    public ResponseEntity<BaseResponse<List<AppointmentAssignment>>> getMostConsulted() {
+    public ResponseEntity<BaseResponse<MostConsultantDTO>> getMostConsulted() {
         return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(),
                 BaseMessage.GET_SUCCESS,
                 service.getMostConsulted()));
