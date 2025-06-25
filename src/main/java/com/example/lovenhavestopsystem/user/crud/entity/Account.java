@@ -43,6 +43,8 @@ public class Account extends BaseEntity {
     @JsonManagedReference
     private List<Role> roles;
 
+
+
     @Column(columnDefinition = "NVARCHAR(255)")
     private String name;
 

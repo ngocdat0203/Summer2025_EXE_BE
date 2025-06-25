@@ -28,87 +28,14 @@ import java.util.stream.Collectors;
 @Service
 public class VNPayService implements IVNPayService {
     private final VNPayConfig vnpayConfig;
-    private final IAppointmentRepository appointmentRepository;
-    private final IPaymentService paymentService;
 
     @Autowired
-    public VNPayService(VNPayConfig vnpayConfig, IAppointmentRepository appointmentRepository, IPaymentService paymentService) {
+    public VNPayService(VNPayConfig vnpayConfig) {
         this.vnpayConfig = vnpayConfig;
-        this.appointmentRepository = appointmentRepository;
-        this.paymentService = paymentService;
     }
 
     @Override
-    public String pay(int appointmentId, String returnUrl, HttpServletRequest request) {
-        Optional<Appointment> optionalAppointment = appointmentRepository.findById(appointmentId);
-        if (optionalAppointment.isEmpty()) {
-            throw new NotFoundException("appointment not found");
-        }
-
-        Appointment appointment = optionalAppointment.get();
-        com.example.lovenhavestopsystem.model.entity.Service service = appointment.getService();
-        AppointmentAssignment assignment = appointment.getAppointmentAssignment();
-
-        if (assignment == null || assignment.getStartTime() == null || assignment.getEndTime() == null) {
-            throw new IllegalStateException("Appointment assignment or its time is not set");
-        }
-
-        long minutes = Duration.between(assignment.getStartTime(), assignment.getEndTime()).toMinutes();
-        int hours = (int) Math.ceil(minutes / 60.0);
-        int pricePerHour = service.getPricePerHour().intValue();
-        int totalPrice = pricePerHour * hours;
-
-        int deposit = pricePerHour / 2;
-        int remainingAmount = totalPrice - deposit;
-        String userEmail = appointment.getCustomer().getEmail();
-
-        String transactionCode = generateTransactionCode();
-
-        paymentService.createPayment(
-                appointmentId,
-                remainingAmount,
-                "ATM",
-                transactionCode,
-                "PENDING",
-                "REMAINING",
-                userEmail,
-                "LoveHavenStopSystem",
-                "Pay the remainder of the appointment #" + appointmentId
-        );
-
-        return createPaymentUrl(request, appointmentId, remainingAmount, returnUrl, transactionCode);
-    }
-
-
-    @Override
-    public String deposit(int appointmentId, String returnUrl, HttpServletRequest request) {
-        Optional<Appointment> appointment = appointmentRepository.findById(appointmentId);
-        if (appointment.isEmpty()) {
-            throw new NotFoundException("appointment not found");
-        }
-
-        int price = appointment.get().getService().getPricePerHour().intValue();
-        int depositAmount = price / 2;
-        String transactionCode = generateTransactionCode();
-        String userEmail = appointment.get().getCustomer().getEmail();
-
-        paymentService.createPayment(
-                appointmentId,
-                depositAmount,
-                "ATM",
-                transactionCode,
-                "PENDING",
-                "DEPOSIT",
-                userEmail,
-                "LoveHavenStopSystem",
-                "Deposit for appointment #" + appointmentId
-        );
-
-        return createPaymentUrl(request, appointmentId, depositAmount, returnUrl, transactionCode);
-    }
-
-
-    private String createPaymentUrl(HttpServletRequest request, int appointmentId, int amount, String returnUrl, String transactionCode) {
+    public String createPaymentUrl(HttpServletRequest request, int userId, int amount, String returnUrl) {
         Map<String, String> vnpParams = new HashMap<>();
         vnpParams.put("vnp_Version", vnpayConfig.getVersion());
         vnpParams.put("vnp_Command", "pay");
@@ -116,7 +43,7 @@ public class VNPayService implements IVNPayService {
         vnpParams.put("vnp_CurrCode", "VND");
         vnpParams.put("vnp_OrderType", "other");
         vnpParams.put("vnp_Amount", String.valueOf(amount * 100L));
-        vnpParams.put("vnp_OrderInfo", String.valueOf(appointmentId));
+        vnpParams.put("vnp_OrderInfo", String.valueOf(userId));
         vnpParams.put("vnp_Locale", "vn");
         vnpParams.put("vnp_ReturnUrl", returnUrl);
         vnpParams.put("vnp_IpAddr", getClientIp(request));
@@ -126,7 +53,7 @@ public class VNPayService implements IVNPayService {
         vnpParams.put("vnp_CreateDate", now.format(formatter));
         vnpParams.put("vnp_ExpireDate", now.plusMinutes(10).format(formatter));
 
-        vnpParams.put("vnp_TxnRef", transactionCode);
+        vnpParams.put("vnp_TxnRef", generateTransactionCode());
 
         String hashData = buildQueryString(vnpParams, false);
         String secureHash = hmacSHA512(vnpayConfig.getSecretKey(), hashData);

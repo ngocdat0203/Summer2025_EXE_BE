@@ -5,8 +5,7 @@ import com.example.lovenhavestopsystem.model.entity.Payment;
 import java.util.List;
 
 public interface IPaymentService {
-    void createPayment(int appointmentId,
-                       double amount,
+    void createPayment(double amount,
                        String method,
                        String transactionCode,
                        String status,

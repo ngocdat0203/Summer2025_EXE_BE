@@ -18,10 +18,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "payment")
 public class Payment extends BaseEntity {
-    @ManyToOne
-    @JoinColumn(name = "appointment_id", referencedColumnName = "id")
-    @JsonManagedReference
-    private Appointment appointment;
 
     private Double amount;
 

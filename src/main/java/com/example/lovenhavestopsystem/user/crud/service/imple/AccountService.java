@@ -4,6 +4,7 @@ import com.example.lovenhavestopsystem.core.base.BaseMessage;
 import com.example.lovenhavestopsystem.core.exception.BadRequestException;
 import com.example.lovenhavestopsystem.core.exception.NotFoundException;
 import com.example.lovenhavestopsystem.service.inter.IConsultantProfileService;
+import com.example.lovenhavestopsystem.service.inter.IWalletService;
 import com.example.lovenhavestopsystem.user.crud.dto.request.AccountCreateDTO;
 import com.example.lovenhavestopsystem.user.crud.dto.request.AccountForgotPasswordDTO;
 import com.example.lovenhavestopsystem.user.crud.dto.request.AccountRegisterDTO;
@@ -50,6 +51,9 @@ public class AccountService implements IAccountService {
     @Autowired
     private IConsultantProfileService consultantProfileService;
 
+    @Autowired
+    private IWalletService  walletService;
+
 
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
@@ -84,6 +88,7 @@ public class AccountService implements IAccountService {
 
 
         accountRepo.save(account);
+        walletService.createWallet(account.getId());
     }
 
     @Override
