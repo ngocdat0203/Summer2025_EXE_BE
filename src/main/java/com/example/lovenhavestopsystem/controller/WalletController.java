@@ -26,6 +26,12 @@ public class WalletController {
         return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), "Payment from wallet successful", null));
     }
 
+    @PostMapping("/wallet/deposit")
+    public ResponseEntity<BaseResponse<?>> depositFromWallet(@RequestParam int appointmentId) {
+        walletService.depositFromWallet(appointmentId);
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), "Deposit from wallet successful", null));
+    }
+
     @PostMapping("/wallet/deposit-to-wallet")
     public ResponseEntity<BaseResponse<?>> depositToWallet(
             @RequestParam int userId,
