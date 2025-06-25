@@ -20,13 +20,9 @@ public class VNPayController {
         this.service = service;
     }
 
-    @GetMapping("/pay")
-    public ResponseEntity<BaseResponse<?>> pay(@RequestParam int appointmentId, @RequestParam String returnUrl, HttpServletRequest request) {
-        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS, service.pay(appointmentId, returnUrl, request)));
+    @GetMapping("/get-vn-pay")
+    public ResponseEntity<BaseResponse<?>> getVNPayUrl(@RequestParam int userId, @RequestParam int amount, @RequestParam String returnUrl, HttpServletRequest request) {
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS, service.createPaymentUrl(request, userId, amount, returnUrl)));
     }
 
-    @GetMapping("/deposit")
-    public ResponseEntity<BaseResponse<?>> deposit(@RequestParam int appointmentId, @RequestParam String returnUrl, HttpServletRequest request) {
-        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS, service.deposit(appointmentId, returnUrl, request)));
-    }
 }
