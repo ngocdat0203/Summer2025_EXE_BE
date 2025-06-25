@@ -31,4 +31,8 @@ public interface IAccountService {
     List<AccountCreateDTO> getAllAccountsByRole(List<String> roles);
 
     void updateStatus(int id, Status status);
+
+    Page<Account> getConsultantInactive(int page, int size);
+
+    Page<Account> getConsultantActive(int page, int size);
 }
