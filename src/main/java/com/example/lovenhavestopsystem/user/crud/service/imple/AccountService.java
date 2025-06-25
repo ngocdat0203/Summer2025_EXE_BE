@@ -215,4 +215,17 @@ public class AccountService implements IAccountService {
         accountRepo.save(account);
     }
 
+    @Override
+    public Page<Account> getConsultantInactive(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return accountRepo.getAllByRolesNameAndStatusAndDeletedTimeIsNull(RoleName.CONSULTANT, Status.INACTIVE, pageable);
+    }
+
+    @Override
+    public Page<Account> getConsultantActive(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return accountRepo.getAllByRolesNameAndStatusAndDeletedTimeIsNull(RoleName.CONSULTANT, Status.ACTIVE, pageable);
+    }
+
+
 }

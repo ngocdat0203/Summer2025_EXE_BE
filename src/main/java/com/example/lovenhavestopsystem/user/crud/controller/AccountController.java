@@ -79,7 +79,7 @@ public class AccountController {
                 .body(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.DELETE_SUCCESS));
     }
 
-    @DeleteMapping("/admin/updateStatus/{id}")
+    @PostMapping("/admin/updateStatus/{id}")
     public ResponseEntity<BaseResponse<Void>> updateStatus(@PathVariable int id, @RequestParam Status status) {
         accountService.updateStatus(id, status);
         return ResponseEntity.status(HttpStatus.OK)
@@ -96,6 +96,24 @@ public class AccountController {
         accountService.create(dto, images);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new BaseResponse<>(HttpStatus.CREATED.value(), BaseMessage.CREATE_SUCCESS));
+    }
+
+    @GetMapping("admin/get-consultant-inactive")
+    public ResponseEntity<BaseResponse<Page<Account>>> getConsultantInactive(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS,
+                        accountService.getConsultantInactive(page, size)));
+    }
+
+    @GetMapping("admin/get-consultant-active")
+    public ResponseEntity<BaseResponse<Page<Account>>> getConsultantActive(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS,
+                        accountService.getConsultantActive(page, size)));
     }
 
 }
