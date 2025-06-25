@@ -39,5 +39,6 @@ public class BaseMessage {
     public static final String PASSWORD_MIN_LENGTH = "Password must be at least 8 characters";
     public static final String PASSWORD_COMPLEXITY = "Password must contain at least one uppercase letter and one special character.";
     public static final String ALREADY_REGISTERED = "Email is already registered";
+    public static final String ACCOUNT_DOES_NOT_CHECKED = "Account has not been checked yet";
 
 }
