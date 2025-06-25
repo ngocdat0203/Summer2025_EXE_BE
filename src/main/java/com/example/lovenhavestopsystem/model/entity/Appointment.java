@@ -47,8 +47,4 @@ public class Appointment extends BaseEntity {
     @JsonManagedReference
     private AppointmentAssignment appointmentAssignment;
 
-    @OneToMany(mappedBy = "appointment",cascade = CascadeType.ALL)
-    @JsonBackReference
-    private List<Payment> payments;
-
 }
