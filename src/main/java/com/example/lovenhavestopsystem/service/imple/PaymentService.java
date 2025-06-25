@@ -29,8 +29,7 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
-    public void createPayment(int appointmentId,
-                              double amount,
+    public void createPayment(double amount,
                               String method,
                               String transactionCode,
                               String status,
@@ -38,9 +37,7 @@ public class PaymentService implements IPaymentService {
                               String from,
                               String to,
                               String description) {
-        Optional<Appointment> appointment = appointmentRepository.findById(appointmentId);
         Payment payment = new Payment();
-        appointment.ifPresent(payment::setAppointment);
         payment.setAmount(amount);
         payment.setMethod(method);
         payment.setTransactionCode(transactionCode);
@@ -54,21 +51,21 @@ public class PaymentService implements IPaymentService {
 
     @Override
     public void updateStatus(String transactionCode, String status) {
-        Payment payment = paymentRepository.findByTransactionCode(transactionCode);
-        if (payment == null) {
-            throw new NotFoundException("Payment not found");
-        }
-        int appointmentId = payment.getAppointment().getId();
-        if(status.equalsIgnoreCase("Success")) {
-            if(payment.getType().equalsIgnoreCase("DEPOSIT")){
-                appointmentService.updateAppointmentStatus(appointmentId, AppointmentStatus.DEPOSITED);
-            }
-            if(payment.getType().equalsIgnoreCase("REMAINING")){
-                appointmentService.updateAppointmentStatus(appointmentId, AppointmentStatus.PAID);
-            }
-        }
-        payment.setStatus(status);
-        paymentRepository.save(payment);
+//        Payment payment = paymentRepository.findByTransactionCode(transactionCode);
+//        if (payment == null) {
+//            throw new NotFoundException("Payment not found");
+//        }
+//        int appointmentId = payment.getAppointment().getId();
+//        if(status.equalsIgnoreCase("Success")) {
+//            if(payment.getType().equalsIgnoreCase("DEPOSIT")){
+//                appointmentService.updateAppointmentStatus(appointmentId, AppointmentStatus.DEPOSITED);
+//            }
+//            if(payment.getType().equalsIgnoreCase("REMAINING")){
+//                appointmentService.updateAppointmentStatus(appointmentId, AppointmentStatus.PAID);
+//            }
+//        }
+//        payment.setStatus(status);
+//        paymentRepository.save(payment);
     }
 
     @Override
