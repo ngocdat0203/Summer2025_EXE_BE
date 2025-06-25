@@ -2,6 +2,8 @@ package com.example.lovenhavestopsystem.user.crud.reposotory;
 
 import com.example.lovenhavestopsystem.user.crud.entity.Account;
 import com.example.lovenhavestopsystem.user.crud.entity.Role;
+import com.example.lovenhavestopsystem.user.crud.enums.RoleName;
+import com.example.lovenhavestopsystem.user.crud.enums.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +23,6 @@ public interface IAccountRepository extends JpaRepository<Account, Integer> {
 
     @Query("SELECT a FROM Account a JOIN a.roles r WHERE r IN :roles")
     List<Account> getAccountsByListRole(List<Role> roles);
+
+    Page<Account> getAllByRolesNameAndStatusAndDeletedTimeIsNull(RoleName roles_name, Status status, Pageable pageable);
 }
