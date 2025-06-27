@@ -11,11 +11,13 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @Repository
-public interface IChatMessageRepository extends JpaRepository<ChatMessage, Integer> {
+public interface IChatMessageRepository extends JpaRepository<ChatMessage, Integer> {/*
     @Query("SELECT cm FROM ChatMessage cm " +
             "WHERE (cm.sender.id = ?1 AND cm.receiver.id = ?2) " +
             "   OR (cm.sender.id = ?2 AND cm.receiver.id = ?1) " +
             "ORDER BY cm.timestamp DESC")
-    Page<ChatMessage> findRecentMessages(Integer senderId, Integer receiverId, Pageable pageable);
-}
+    Page<ChatMessage> findRecentMessages(Integer senderId, Integer receiverId, Pageable pageable);*/
 
+
+    List<ChatMessage> findAllByConversationIdOrderByCreatedDateDesc(int conversation_id);
+}

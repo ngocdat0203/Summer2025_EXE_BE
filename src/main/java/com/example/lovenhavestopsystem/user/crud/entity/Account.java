@@ -2,6 +2,7 @@ package com.example.lovenhavestopsystem.user.crud.entity;
 
 import com.example.lovenhavestopsystem.core.base.BaseMessage;
 import com.example.lovenhavestopsystem.model.entity.ChatMessage;
+import com.example.lovenhavestopsystem.model.entity.Conversation;
 import com.example.lovenhavestopsystem.model.entity.Payment;
 import com.example.lovenhavestopsystem.user.crud.enums.Status;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -23,6 +24,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @jakarta.persistence.Entity
+@Builder
 public class Account extends BaseEntity {
     @NotNull(message = BaseMessage.EMAIL_NOT_NULL)
     @Email(message = BaseMessage.EMAIL_INVALID)
@@ -64,11 +66,17 @@ public class Account extends BaseEntity {
     private String urlImage;
 
 
-    @OneToMany(mappedBy = "sender")
+/*    @OneToMany(mappedBy = "sender")
     private List<ChatMessage> sentMessages;
 
     @OneToMany(mappedBy = "receiver")
-    private List<ChatMessage> receivedMessages;
+    private List<ChatMessage> receivedMessages;*/
+
+    @ManyToMany(mappedBy = "participants")
+    private List<Conversation> conversations;
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<ChatMessage> messages;
 
     @Override
     public String toString() {
