@@ -24,17 +24,19 @@ public class LoveHavenStopSystemApplication {
         );
 
 
-
-
-
         SpringApplication.run(LoveHavenStopSystemApplication.class, args);
-       /* BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
-        String raw = "password123";
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+        String raw = "Manager@123";
         String hash = encoder.encode(raw);
 
-        System.out.println("Hash: " + hash);
+        String raw2 = "Admin@123@123";
+        String hash2 = encoder.encode(raw2);
 
-        System.out.println("Match? " + encoder.matches(raw, hash));*/
+
+        System.out.println("Hash: " + hash);
+        System.out.println("Hash2: " + hash2);
+
+        //System.out.println("Match? " + encoder.matches(raw, hash));
 
 
 
