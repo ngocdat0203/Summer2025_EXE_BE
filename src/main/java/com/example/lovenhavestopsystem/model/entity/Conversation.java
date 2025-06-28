@@ -23,6 +23,7 @@ public class Conversation extends BaseEntity {
     String participantHash;
 
     @ManyToMany
+    @JsonBackReference
     @JoinTable(
             name = "conversation_account",
             joinColumns = @JoinColumn(name = "conversation_id"),
@@ -36,5 +37,6 @@ public class Conversation extends BaseEntity {
     Instant modifiedDate;
 
     @OneToMany(mappedBy = "conversation", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<ChatMessage> lastMessage;
 }

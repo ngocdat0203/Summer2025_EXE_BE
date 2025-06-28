@@ -12,6 +12,7 @@ import com.example.lovenhavestopsystem.repository.IConversationRepository;
 import com.example.lovenhavestopsystem.service.inter.IChatMessageService;
 import com.example.lovenhavestopsystem.user.crud.entity.Account;
 import com.example.lovenhavestopsystem.user.crud.reposotory.IAccountRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -110,7 +111,7 @@ public class ChatMessageService implements IChatMessageService {
                 .orElseThrow(() -> new NotFoundException(BaseMessage.NOT_FOUND))
                 .getParticipants()
                 .stream()
-                .filter(participantInfo -> userId.equals(participantInfo.getId()))
+                .filter(participantInfo -> userId.equals(participantInfo.getEmail()))
                 .findAny()
                 .orElseThrow(() -> new NotFoundException(BaseMessage.NOT_FOUND));
 
@@ -152,6 +153,7 @@ public class ChatMessageService implements IChatMessageService {
 */
 
     @Override
+    @Transactional
     public ChatMessageResponseDTO createChatMessage(ChatMessageRequestDTO chatMessageResponseDTO) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -180,6 +182,9 @@ public class ChatMessageService implements IChatMessageService {
 
         // Save message
         chatMessage = chatMessageRepository.save(chatMessage);
+
+        System.out.println("===> Saved message: " + chatMessage);
+
 
         return toChatMessageResponse(chatMessage);
     }
