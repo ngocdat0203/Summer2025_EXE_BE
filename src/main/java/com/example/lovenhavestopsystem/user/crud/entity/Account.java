@@ -73,9 +73,11 @@ public class Account extends BaseEntity {
     private List<ChatMessage> receivedMessages;*/
 
     @ManyToMany(mappedBy = "participants")
+    @JsonBackReference
     private List<Conversation> conversations;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<ChatMessage> messages;
 
     @Override
