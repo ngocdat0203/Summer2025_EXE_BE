@@ -11,6 +11,9 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -164,4 +167,18 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    public Authentication getAuthentication(String token) {
+        try {
+            Claims claims = extractAllClaims(token);
+            String email = claims.getSubject(); // hoặc claims.get("email", String.class)
+
+            // ⚠️ Dùng user cứng không cần DB
+            UserDetails userDetails = new User(email, "", Collections.emptyList());
+
+            return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        } catch (Exception e) {
+            logger.error("❌ Lỗi khi trích xuất authentication từ token: {}", e.getMessage());
+            return null;
+        }
+    }
 }
