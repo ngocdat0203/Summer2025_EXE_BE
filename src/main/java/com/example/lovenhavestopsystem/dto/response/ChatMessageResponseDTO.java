@@ -16,6 +16,6 @@ public class ChatMessageResponseDTO {
     String conversationId;
     boolean me;
     String message;
-    Account sennder;
+    Account sender;
     Instant createdDate;
 }

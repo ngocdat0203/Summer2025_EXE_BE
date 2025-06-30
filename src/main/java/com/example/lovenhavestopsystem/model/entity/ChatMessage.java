@@ -21,6 +21,7 @@ public class ChatMessage extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "conversation_id", nullable = false)
+    @JsonManagedReference
     private Conversation conversation;
 
     @Column(name = "message", columnDefinition = "NVARCHAR(MAX)", nullable = false)
