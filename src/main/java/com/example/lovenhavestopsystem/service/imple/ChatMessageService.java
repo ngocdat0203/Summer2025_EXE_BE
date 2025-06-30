@@ -154,11 +154,11 @@ public class ChatMessageService implements IChatMessageService {
 
     @Override
     @Transactional
-    public ChatMessageResponseDTO createChatMessage(ChatMessageRequestDTO chatMessageResponseDTO) {
+    public ChatMessageResponseDTO createChatMessage(ChatMessageRequestDTO chatMessageRequestDTO) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
         // Validate conversationId
-        Conversation conversation = conversationRepository.findById(chatMessageResponseDTO.getConversationId())
+        Conversation conversation = conversationRepository.findById(chatMessageRequestDTO.getConversationId())
                 .orElseThrow(() -> new NotFoundException(BaseMessage.NOT_FOUND));
 
         // Check if the current user is a participant
@@ -174,16 +174,35 @@ public class ChatMessageService implements IChatMessageService {
             throw new NotFoundException(BaseMessage.NOT_FOUND);
         }
 
-        // Build Chat message
-        ChatMessage chatMessage = chatMessageMapper.toChatMessage(chatMessageResponseDTO);
-        chatMessage.setAccount(userInfo); // ✅ fix: dùng entity đã load
-        chatMessage.setConversation(conversation); // nếu chưa có dòng này
+
+        ChatMessage chatMessage = chatMessageMapper.toChatMessage(chatMessageRequestDTO);
+        chatMessage.setAccount(userInfo);
+        chatMessage.setConversation(conversation);
+        chatMessage.setMessage(chatMessageRequestDTO.getMessage());
         chatMessage.setCreatedDate(Instant.now());
 
-        // Save message
+        System.out.println("===> userInfo = " + userInfo);
+        System.out.println("===> conversation = " + conversation);
+
+
+        System.out.println("DEBUG ===> chatMessage: " + chatMessage);
+        System.out.println("DEBUG ===> account: " + chatMessage.getAccount());
+        System.out.println("DEBUG ===> conversation: " + chatMessage.getConversation());
+
+
         chatMessage = chatMessageRepository.save(chatMessage);
 
+        chatMessage = chatMessageRepository.findChatMessageById(chatMessage.getId())
+                .orElseThrow(() -> new RuntimeException("Cannot reload saved message"));
+
+        System.out.println("AFTER FETCH: account = " + chatMessage.getAccount());
+        System.out.println("AFTER FETCH: conversation = " + chatMessage.getConversation());
+
+
+
         System.out.println("===> Saved message: " + chatMessage);
+
+
 
 
         return toChatMessageResponse(chatMessage);
@@ -191,9 +210,8 @@ public class ChatMessageService implements IChatMessageService {
 
     private ChatMessageResponseDTO toChatMessageResponse(ChatMessage chatMessage) {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        var chatMessageResponse = chatMessageMapper.toChatMessageResponse(chatMessage);
-
-        chatMessageResponse.setMe(userName.equals(chatMessage.getAccount().getName()));
+        var chatMessageResponse = chatMessageMapper.toChatMessageResponse(chatMessage, userName);
+        chatMessageResponse.setMe(userName.equals(chatMessage.getAccount().getEmail()));
 
         return chatMessageResponse;
     }
