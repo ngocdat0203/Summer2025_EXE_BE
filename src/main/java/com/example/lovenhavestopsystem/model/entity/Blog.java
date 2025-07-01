@@ -15,8 +15,12 @@ import java.util.List;
 @Getter
 @Setter
 public class Blog extends BaseEntity {
+
+    @Column(columnDefinition = "NVARCHAR(355)")
     private String title;
+    @Column(columnDefinition = "NVARCHAR(355)")
     private String headline;
+    @Column(columnDefinition = "NVARCHAR(355)")
     private String summary;
     private String thumbnailUrl;
     @Column(columnDefinition = "TEXT")
