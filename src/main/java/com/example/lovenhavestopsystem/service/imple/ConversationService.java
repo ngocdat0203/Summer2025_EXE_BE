@@ -171,4 +171,12 @@ public class ConversationService implements IConversationService {
 
         return conversationResponse;
     }
+    public List<String> getParticipantEmails(int conversationId) {
+        Conversation conversation = conversationRepository.findByIdWithParticipants(conversationId)
+                .orElseThrow(() -> new BadRequestException("Cuộc trò chuyện không tồn tại."));
+
+        return conversation.getParticipants().stream()
+                .map(Account::getEmail)
+                .toList();
+    }
 }

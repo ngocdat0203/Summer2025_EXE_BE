@@ -1,7 +1,7 @@
 package com.example.lovenhavestopsystem.core.config;
 
 import com.example.lovenhavestopsystem.socket.AuthHandshakeInterceptor;
-import com.example.lovenhavestopsystem.socket.ChatSocketHandler;
+//import com.example.lovenhavestopsystem.socket.ChatSocketHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.*;
@@ -21,14 +21,16 @@ public class WebSocket implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/ws")// hoặc cấu hình cụ thể cho frontend
                 .addInterceptors(authHandshakeInterceptor)
                 .setAllowedOriginPatterns("*")
-               .withSockJS(); // DÙNG SOCKJS ĐỂ HỖ TRỢ KẾT NỐI
+                .withSockJS(); // DÙNG SOCKJS ĐỂ HỖ TRỢ KẾT NỐI
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker( "/topic"); // Broker cho gửi tin
-        registry.setApplicationDestinationPrefixes("/app"); // cho tin nhắn riêng tư
+        registry.enableSimpleBroker("/topic", "/queue"); // Phải có /queue để gửi riêng
+        registry.setApplicationDestinationPrefixes("/app");
+        registry.setUserDestinationPrefix("/user"); // Phải có để @SendToUser hoặc convertAndSendToUser hoạt động đúng
     }
+
 
 
 }
