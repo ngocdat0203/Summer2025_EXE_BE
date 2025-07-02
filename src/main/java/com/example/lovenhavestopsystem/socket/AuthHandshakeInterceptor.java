@@ -34,29 +34,28 @@ public class AuthHandshakeInterceptor implements HandshakeInterceptor {
 
             if (token != null && !token.isBlank()) {
                 try {
-                    String username = jwtService.extractUsername(token); // sub = email
+                    String username = jwtService.extractUsername(token);
 
-                    // ⚠️ Phải truyền userDetails để validateToken không null
                     var dummyUserDetails = new User(username, "", Collections.emptyList());
-
                     if (jwtService.validateToken(token, dummyUserDetails)) {
                         var authentication = new UsernamePasswordAuthenticationToken(
-                                dummyUserDetails, null, dummyUserDetails.getAuthorities());
+                                dummyUserDetails, null, dummyUserDetails.getAuthorities()
+                        );
 
                         SecurityContextHolder.getContext().setAuthentication(authentication);
-                        log.info("✅ Authenticated WebSocket user: {}", username);
+                        attributes.put("username", username); // 👈 Cần để định tuyến người dùng
                         return true;
                     }
                 } catch (Exception e) {
-                    log.error("❌ Error validating token in WebSocket handshake: {}", e.getMessage(), e);
+                    log.error("❌ Token validation failed: {}", e.getMessage());
                 }
-            } else {
-                log.warn("❌ WebSocket token not found or empty");
             }
         }
 
-        return false; // từ chối nếu token sai
+        return false;
     }
+
+
 
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response,

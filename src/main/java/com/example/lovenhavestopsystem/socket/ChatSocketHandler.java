@@ -1,46 +1,91 @@
+/*
 package com.example.lovenhavestopsystem.socket;
 
+import com.example.lovenhavestopsystem.user.auth.jwt.JwtService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.CloseStatus;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.*;
+
+
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 @Component
 public class ChatSocketHandler extends TextWebSocketHandler {
 
-    // Lưu phiên kết nối của userId
-    private final ConcurrentHashMap<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
+    @Autowired
+    private JwtService jwtService; // 👈 Bạn cần thêm JwtService để xác thực token
+
+    // Map<conversationId, Map<userEmail, session>>
+    private final ConcurrentHashMap<String, ConcurrentHashMap<String, WebSocketSession>> conversationSessions = new ConcurrentHashMap<>();
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        // Lấy userId từ query param (vd: /ws/chat?userId=123)
-        String userId = session.getUri().getQuery().split("=")[1];
-        sessions.put(userId, session);
-        System.out.println("Connected user: " + userId);
+        var queryParams = session.getUri().getQuery(); // token=...&conversationId=...
+        String[] params = queryParams.split("&");
+
+        String token = null;
+        String conversationId = null;
+
+        for (String param : params) {
+            if (param.startsWith("token=")) {
+                token = param.substring("token=".length());
+            } else if (param.startsWith("conversationId=")) {
+                conversationId = param.substring("conversationId=".length());
+            }
+        }
+
+        // Validate token
+        if (token == null || conversationId == null) {
+            session.close(CloseStatus.BAD_DATA);
+            return;
+        }
+
+        String userId = jwtService.extractUserId(token); // 👈 Bạn cần thêm hàm này
+
+        conversationSessions
+                .computeIfAbsent(conversationId, k -> new ConcurrentHashMap<>())
+                .put(userId, session);
+
+        System.out.println("✅ Connected user: " + userId + " to conversation: " + conversationId);
     }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        // Format tin nhắn: senderId|receiverId|nội dung
-        String[] parts = message.getPayload().split("\\|", 3);
-        String senderId = parts[0];
-        String receiverId = parts[1];
-        String content = parts[2];
+        String payload = message.getPayload(); // format: conversationId|messageContent
+        String[] parts = payload.split("\\|", 2);
 
-        System.out.println("[" + senderId + " -> " + receiverId + "] " + content);
+        if (parts.length < 2) {
+            log.warn("⚠️ Invalid message format: {}", payload);
+            return;
+        }
 
-        // Gửi lại cho người nhận nếu online
-        WebSocketSession receiverSession = sessions.get(receiverId);
-        if (receiverSession != null && receiverSession.isOpen()) {
-            receiverSession.sendMessage(new TextMessage(senderId + ": " + content));
+        String conversationId = parts[0];
+        String content = parts[1];
+
+        String senderEmail = (String) session.getAttributes().get("userEmail");
+
+        Map<String, WebSocketSession> participants = conversationSessions.get(conversationId);
+        if (participants != null) {
+            for (Map.Entry<String, WebSocketSession> entry : participants.entrySet()) {
+                WebSocketSession receiverSession = entry.getValue();
+                if (receiverSession != null && receiverSession.isOpen()) {
+                    receiverSession.sendMessage(new TextMessage(senderEmail + ": " + content));
+                }
+            }
         }
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        sessions.values().remove(session);
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
+        for (Map<String, WebSocketSession> participants : conversationSessions.values()) {
+            participants.values().removeIf(s -> s.equals(session));
+        }
+        log.info("🔌 WebSocket connection closed");
     }
 }
+*/
