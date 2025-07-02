@@ -181,4 +181,10 @@ public class JwtService {
             return null;
         }
     }
+
+    public String extractUserId(String token) {
+        Claims claims = extractAllClaims(token);
+        return String.valueOf(claims.get("id")); // hoặc lấy email nếu bạn dùng sub/email
+    }
+
 }

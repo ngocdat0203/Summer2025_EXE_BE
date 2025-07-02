@@ -5,6 +5,7 @@ import com.example.lovenhavestopsystem.dto.request.ChatMessageRequestDTO;
 import com.example.lovenhavestopsystem.dto.response.ChatMessageResponseDTO;
 import com.example.lovenhavestopsystem.model.entity.ChatMessage;
 import com.example.lovenhavestopsystem.service.imple.ChatMessageService;
+import com.example.lovenhavestopsystem.service.imple.ConversationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -35,11 +36,15 @@ public class ChatController {
     }*/
 
     private final SimpMessagingTemplate messagingTemplate;
+
     private final ChatMessageService chatMessageService;
 
-    public ChatController(SimpMessagingTemplate messagingTemplate, ChatMessageService chatMessageService) {
+    private final ConversationService conversationService;
+
+    public ChatController(SimpMessagingTemplate messagingTemplate, ChatMessageService chatMessageService, ConversationService conversationService) {
         this.messagingTemplate = messagingTemplate;
         this.chatMessageService = chatMessageService;
+        this.conversationService = conversationService;
     }
 
     // Gửi tin nhắn real-time
@@ -59,10 +64,19 @@ public class ChatController {
         System.out.println("===> Saved message: " + savedMessage);
 
         // Gửi đến những ai đang theo dõi cuộc trò chuyện
-        messagingTemplate.convertAndSend(
+        /*messagingTemplate.convertAndSend(
                 "/topic/conversation/" + messageDTO.getConversationId(),
                 savedMessage
-        );
+        );*/
+
+        List<String> participantEmails = conversationService.getParticipantEmails(messageDTO.getConversationId());
+        for (String email : participantEmails) {
+            messagingTemplate.convertAndSendToUser(
+                    email, // tên user
+                    "/queue/conversation/" + messageDTO.getConversationId(), // đích riêng của user
+                    savedMessage
+            );
+        }
     }
 
 
