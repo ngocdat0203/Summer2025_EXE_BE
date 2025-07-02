@@ -3,6 +3,7 @@ package com.example.lovenhavestopsystem.repository;
 import com.example.lovenhavestopsystem.model.entity.Conversation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,5 +29,8 @@ public interface IConversationRepository extends JpaRepository<Conversation, Int
     WHERE p.name = :userName AND c.deletedTime IS NULL
     """)
     List<Conversation> findByAccountName( String userName);
+
+    @Query("SELECT c FROM Conversation c JOIN FETCH c.participants WHERE c.id = :id")
+    Optional<Conversation> findByIdWithParticipants(@Param("id") int id);
 
 }
