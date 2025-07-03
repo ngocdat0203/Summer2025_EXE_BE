@@ -23,8 +23,7 @@ public class ConversationController {
 
     @PostMapping("/create")
     public ResponseEntity<BaseResponse<?>> createConversation(@RequestBody @Valid ConversationRequestDTO request) {
-        conversationService.createConversation(request);
-        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.CREATED.value(), "Conversation created successfully"));
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.CREATED.value(), "Conversation created successfully", conversationService.createConversation(request)));
 
     }
 }
