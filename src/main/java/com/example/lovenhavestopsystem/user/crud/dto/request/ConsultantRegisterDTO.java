@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,4 +17,5 @@ public class ConsultantRegisterDTO {
     private AccountRegisterDTO accountRegisterDTO;
     private String bio;
     private String expertise;
+    private List<String> certificates; // Comma-separated list of certificate IDs
 }
