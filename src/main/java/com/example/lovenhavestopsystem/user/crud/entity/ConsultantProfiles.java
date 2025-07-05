@@ -25,6 +25,12 @@ public class ConsultantProfiles extends BaseEntity {
 
     private String bio;
     private String expertise;
+
+    @ElementCollection
+    @CollectionTable(name = "consultant_certificates", joinColumns = @JoinColumn(name = "consultant_profiles_id"))
+    @Column(name = "certificate_url")
+    private List<String> urlCertificates;
+
     private LocalDateTime approvedAt;
 
 
