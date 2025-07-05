@@ -73,7 +73,9 @@ public class ConsultantService implements IConsultantService {
             List<Role> roles = new ArrayList<>(account.getRoles());
             roles.add(consultantRole);
             account.setRoles(roles);
+
             account.setStatus(Status.INACTIVE);
+
             accountRepo.save(account);
         }
 
@@ -81,6 +83,7 @@ public class ConsultantService implements IConsultantService {
         consultantProfiles.setAccount(account);
         consultantProfiles.setBio(consultantProfilesRegisterDTO.getBio());
         consultantProfiles.setExpertise(consultantProfilesRegisterDTO.getExpertise());
+        consultantProfiles.setUrlCertificates(consultantProfilesRegisterDTO.getCertificates());
 
         consultantProfileRepository.save(consultantProfiles);
     }
