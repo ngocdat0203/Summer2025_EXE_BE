@@ -86,8 +86,8 @@ public class Account extends BaseEntity {
                 "id=" + getId() +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
-                ", roles=" + roles +
-                '}';
+                ", roles=" + roles.stream().map(Role::getName).toList() +
+        '}';
     }
 
 
