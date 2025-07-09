@@ -27,6 +27,9 @@ public interface IAccountRepository extends JpaRepository<Account, Integer> {
     @Query("SELECT a FROM Account a JOIN a.roles r WHERE r IN :roles")
     List<Account> getAccountsByListRole(List<Role> roles);
 
+    @Query("SELECT a FROM Account a JOIN a.roles r WHERE r IN :roles AND a.deletedTime IS NULL AND a.status = com.example.lovenhavestopsystem.user.crud.enums.Status.ACTIVE")
+    List<Account> getAccountsByListRoleAndActive(List<Role> roles);
+
     Page<Account> getAllByRolesNameAndStatusAndDeletedTimeIsNull(RoleName roles_name, Status status, Pageable pageable);
 
 

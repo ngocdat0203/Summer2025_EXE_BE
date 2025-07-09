@@ -179,4 +179,13 @@ public class ConversationService implements IConversationService {
                 .map(Account::getEmail)
                 .toList();
     }
+
+    public List<ConversationResponseDTO> getConversationByAccountJwt() {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<Conversation> conversations = conversationRepository.findByAccountEmail(userId);
+        if (conversations.isEmpty()) {
+            throw new BadRequestException("Không có cuộc trò chuyện nào.");
+        }
+        return conversationMapper.toConversationResponseList(conversations);
+    }
 }

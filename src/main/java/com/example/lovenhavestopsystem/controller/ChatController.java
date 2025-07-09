@@ -61,7 +61,10 @@ public class ChatController {
 
         ChatMessageResponseDTO savedMessage = chatMessageService.createChatMessage(messageDTO);
 
-        System.out.println("===> Saved message: " + savedMessage);
+        System.out.println("===> Saved message: id=" + savedMessage.getId() +
+                ", content=" + savedMessage.getMessage() +
+                ", sender=" + savedMessage.getSender().getEmail());
+
 
         // Gửi đến những ai đang theo dõi cuộc trò chuyện
         /*messagingTemplate.convertAndSend(

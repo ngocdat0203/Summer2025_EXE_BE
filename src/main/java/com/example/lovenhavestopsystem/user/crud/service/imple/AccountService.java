@@ -205,6 +205,30 @@ public class AccountService implements IAccountService {
         }
     }
 
+
+    public List<AccountCreateDTO> getAllAccountsByRoleAndActive(List<String> roles) {
+        try {
+
+            List<RoleName> roleNames = roles.stream()
+                    .map(RoleName::valueOf)
+                    .toList();
+            List<Role> rolesList = roleRepository.getRolesByNameIn(roleNames);
+            List<Account> accounts = accountRepo.getAccountsByListRoleAndActive(rolesList);
+            List<AccountCreateDTO> accountCreateDTOS = new ArrayList<>();
+            for (Account account : accounts) {
+                AccountCreateDTO accountCreateDTO = new AccountCreateDTO();
+                accountCreateDTO.setEmail(account.getEmail());
+                accountCreateDTO.setName(account.getName());
+                accountCreateDTO.setPhone(account.getPhone());
+                accountCreateDTO.setStatus(account.getStatus().toString());
+                accountCreateDTOS.add(accountCreateDTO);
+            }
+            return accountCreateDTOS;
+        } catch (Exception e) {
+            throw new BadRequestException(e.getMessage());
+        }
+    }
+
     @Override
     public void updateStatus(int id, Status status) {
         Account account = accountRepo.findByIdAndDeletedTimeIsNull(id);
