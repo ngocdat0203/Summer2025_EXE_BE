@@ -72,6 +72,13 @@ public class AccountController {
                         accountService.getAllAccountsByRole(roles)));
     }
 
+    @GetMapping("/get-accounts-by-role")
+    public ResponseEntity<BaseResponse<?>> getAccountsByRoleActive(@RequestParam List<String> roles) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS,
+                        accountService.getAllAccountsByRoleAndActive(roles)));
+    }
+
     @DeleteMapping("/admin/delete/{id}")
     public ResponseEntity<BaseResponse<Void>> delete(@PathVariable int id) {
         accountService.delete(id);

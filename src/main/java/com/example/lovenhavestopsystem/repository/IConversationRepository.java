@@ -30,6 +30,13 @@ public interface IConversationRepository extends JpaRepository<Conversation, Int
     """)
     List<Conversation> findByAccountName( String userName);
 
+    @Query("""
+    SELECT c FROM Conversation c
+    JOIN c.participants p
+    WHERE p.email = :userName AND c.deletedTime IS NULL
+    """)
+    List<Conversation> findByAccountEmail( String userName);
+
     @Query("SELECT c FROM Conversation c JOIN FETCH c.participants WHERE c.id = :id")
     Optional<Conversation> findByIdWithParticipants(@Param("id") int id);
 
