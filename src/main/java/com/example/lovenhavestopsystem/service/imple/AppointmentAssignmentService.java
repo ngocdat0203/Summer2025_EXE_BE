@@ -13,6 +13,7 @@ import com.example.lovenhavestopsystem.service.inter.IAppointmentService;
 import com.example.lovenhavestopsystem.user.crud.entity.ConsultantProfiles;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -60,6 +61,13 @@ public class AppointmentAssignmentService implements IAppointmentAssignmentServi
         assignment.setEndTime(endTime);
         repo.save(assignment);
         int appointmentId = assignment.getAppointment().getId();
+        Appointment appointment = appointmentRepo.findById(appointmentId).orElseThrow(() -> new NotFoundException("Appointment not found"));
+        long minutes = Duration.between(assignment.getStartTime(), assignment.getEndTime()).toMinutes();
+        int hours = (int) Math.ceil(minutes / 60.0);
+        int pricePerHour = appointment.getService().getPricePerHour().intValue();
+        int totalPrice = pricePerHour * hours;
+        appointment.setTotalAmount(totalPrice);
+        appointmentRepo.save(appointment);
         appointmentService.updateAppointmentStatus(appointmentId, AppointmentStatus.COMPLETED);
     }
 

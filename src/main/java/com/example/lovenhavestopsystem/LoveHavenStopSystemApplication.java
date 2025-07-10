@@ -3,6 +3,7 @@ package com.example.lovenhavestopsystem;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.crypto.SecretKey;
@@ -11,6 +12,7 @@ import java.util.Base64;
 import javax.crypto.KeyGenerator;
 
 @SpringBootApplication
+@EnableScheduling
 public class LoveHavenStopSystemApplication {
 
     public static void main(String[] args) {
