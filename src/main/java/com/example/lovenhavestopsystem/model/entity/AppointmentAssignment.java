@@ -37,5 +37,4 @@ public class AppointmentAssignment extends BaseEntity {
 
     private boolean isPaid;
 
-
 }
