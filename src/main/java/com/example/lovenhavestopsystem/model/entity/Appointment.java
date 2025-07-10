@@ -40,6 +40,9 @@ public class Appointment extends BaseEntity {
 
     private LocalDateTime preferredTime;
 
+    @Column(nullable = true)
+    private int totalAmount;
+
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
 
