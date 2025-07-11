@@ -1,8 +1,10 @@
 package com.example.lovenhavestopsystem.core.config;
 
+import com.example.lovenhavestopsystem.socket.AuthChannelInterceptorAdapter;
 import com.example.lovenhavestopsystem.socket.AuthHandshakeInterceptor;
 //import com.example.lovenhavestopsystem.socket.ChatSocketHandler;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.*;
 
@@ -12,8 +14,12 @@ public class WebSocket implements WebSocketMessageBrokerConfigurer {
 
     private final AuthHandshakeInterceptor authHandshakeInterceptor;
 
-    public WebSocket(AuthHandshakeInterceptor authHandshakeInterceptor) {
+    private final AuthChannelInterceptorAdapter authChannelInterceptorAdapter;
+
+    public WebSocket(AuthHandshakeInterceptor authHandshakeInterceptor,
+                     AuthChannelInterceptorAdapter authChannelInterceptorAdapter) {
         this.authHandshakeInterceptor = authHandshakeInterceptor;
+        this.authChannelInterceptorAdapter = authChannelInterceptorAdapter;
     }
 
     @Override
@@ -30,6 +36,12 @@ public class WebSocket implements WebSocketMessageBrokerConfigurer {
         registry.setApplicationDestinationPrefixes("/app");
         registry.setUserDestinationPrefix("/user"); // Phải có để @SendToUser hoặc convertAndSendToUser hoạt động đúng
     }
+
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors(authChannelInterceptorAdapter);
+    }
+
 
 
 
