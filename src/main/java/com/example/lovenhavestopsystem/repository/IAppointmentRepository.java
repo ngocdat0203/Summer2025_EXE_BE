@@ -33,4 +33,5 @@ public interface IAppointmentRepository extends JpaRepository<Appointment, Integ
     List<Appointment> findAppointmentsByServiceId(int service_id);
     List<Appointment> findByAppointmentAssignment_Consultant_Id(int consultant_id);
 
+
 }

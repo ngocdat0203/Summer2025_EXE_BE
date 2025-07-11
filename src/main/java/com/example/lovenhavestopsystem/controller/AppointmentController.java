@@ -57,4 +57,18 @@ public class AppointmentController {
     public ResponseEntity<BaseResponse<List<Appointment>>> getByConsultantId(@RequestParam int consultantId) {
         return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS, appointmentService.getAllAppointmentsByConsultantId(consultantId)));
     }
+
+    @GetMapping("get-total-amount-by-service-id")
+    public ResponseEntity<BaseResponse<Double>> getTotalAmountByServiceId(@RequestParam int serviceId) {
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS, appointmentService.getTotalAmountByServiceId(serviceId)));
+    }
+    @GetMapping("get-all-total-amount")
+    public ResponseEntity<BaseResponse<Double>> getAllTotalAmount() {
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS, appointmentService.getAllTotalAmount()));
+    }
+    @GetMapping("get-total-amount-by-month")
+    public ResponseEntity<BaseResponse<Double>> getTotalAmountByMonth(@RequestParam int month,
+                                                                      @RequestParam int year) {
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS, appointmentService.getTotalAmountByMonth(month, year)));
+    }
 }
