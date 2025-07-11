@@ -27,23 +27,23 @@ public class AuthHandshakeInterceptor implements HandshakeInterceptor {
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response,
                                    WebSocketHandler wsHandler, Map<String, Object> attributes) {
-
         if (request instanceof ServletServerHttpRequest servletRequest) {
             HttpServletRequest httpRequest = servletRequest.getServletRequest();
+
+            // ✅ LẤY TOKEN QUA QUERY
             String token = httpRequest.getParameter("token");
 
             if (token != null && !token.isBlank()) {
                 try {
                     String username = jwtService.extractUsername(token);
-
                     var dummyUserDetails = new User(username, "", Collections.emptyList());
+
                     if (jwtService.validateToken(token, dummyUserDetails)) {
                         var authentication = new UsernamePasswordAuthenticationToken(
                                 dummyUserDetails, null, dummyUserDetails.getAuthorities()
                         );
-
                         SecurityContextHolder.getContext().setAuthentication(authentication);
-                        attributes.put("username", username); // 👈 Cần để định tuyến người dùng
+                        attributes.put("username", username);
                         return true;
                     }
                 } catch (Exception e) {
@@ -55,11 +55,9 @@ public class AuthHandshakeInterceptor implements HandshakeInterceptor {
         return false;
     }
 
-
-
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response,
                                WebSocketHandler wsHandler, Exception exception) {
-        // Không cần xử lý gì ở đây
     }
 }
+
