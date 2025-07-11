@@ -13,6 +13,7 @@ import com.example.lovenhavestopsystem.user.crud.entity.Account;
 import com.example.lovenhavestopsystem.user.crud.reposotory.IAccountRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,5 +75,48 @@ public class AppointmentService implements IAppointmentService {
     @Override
     public List<Appointment> getAllAppointmentsByConsultantId(int id) {
         return appointmentRepository.findByAppointmentAssignment_Consultant_Id(id);
+    }
+
+    @Override
+    public Double getTotalAmountByServiceId(int serviceId) {
+        List<Appointment> appointments = appointmentRepository.findAppointmentsByServiceId(serviceId);
+
+        if (appointments.isEmpty()) {
+            throw new NotFoundException("No appointments found for the given service ID");
+        }
+        return appointments.stream()
+                .filter(appointment -> appointment.getAppointmentAssignment() != null && appointment.getAppointmentAssignment().isPaid())
+                .mapToDouble(Appointment::getTotalAmount)
+                .sum();
+    }
+
+    @Override
+    public Double getAllTotalAmount() {
+        List<Appointment> appointments = appointmentRepository.findAll();
+
+        if (appointments.isEmpty()) {
+            throw new NotFoundException("No appointments found");
+        }
+
+        return appointments.stream()
+                .filter(appointment -> appointment.getAppointmentAssignment() != null && appointment.getAppointmentAssignment().isPaid())
+                .mapToDouble(Appointment::getTotalAmount)
+                .sum();
+    }
+
+    @Override
+    public Double getTotalAmountByMonth(int month, int year) {
+        List<Appointment> appointments = appointmentRepository.findAll();
+        if (appointments.isEmpty()) {
+            throw new NotFoundException("No appointments found");
+        }
+        return appointments.stream()
+                .filter(appointment -> appointment.getPreferredTime() != null &&
+                        appointment.getPreferredTime().getMonthValue() == month &&
+                        appointment.getPreferredTime().getYear() == year &&
+                        appointment.getAppointmentAssignment() != null &&
+                        appointment.getAppointmentAssignment().isPaid())
+                .mapToDouble(Appointment::getTotalAmount)
+                .sum();
     }
 }
