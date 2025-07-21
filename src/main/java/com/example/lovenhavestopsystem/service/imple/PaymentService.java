@@ -81,4 +81,33 @@ public class PaymentService implements IPaymentService {
         return paymentRepository.findAll();
 
     }
+
+    @Override
+    public List<Payment> getByConsultantIdAndMonth(String email, int month, int year) {
+        List<Payment> payments = paymentRepository.findAll();
+        if (payments.isEmpty()) {
+            throw new NotFoundException("No payments found");
+        }
+        return payments.stream()
+                .filter(payment -> payment.getToAccount().equals(email))
+                .filter(payment -> payment.getPaidAt().getMonthValue() == month && payment.getPaidAt().getYear() == year)
+                .filter(payment -> "Success".equalsIgnoreCase(payment.getStatus()) && "Pay".equalsIgnoreCase(payment.getType()))
+                .toList();
+    }
+
+    @Override
+    public List<Payment> getByAllIncomeInMonth(int month, int year) {
+        List<Payment> payments = paymentRepository.findAll();
+
+        if (payments.isEmpty()) {
+            throw new NotFoundException("No payments found");
+        }
+
+        return payments.stream()
+                .filter(payment -> payment.getPaidAt().getMonthValue() == month && payment.getPaidAt().getYear() == year)
+                .filter(payment -> "Success".equalsIgnoreCase(payment.getStatus()) && "Pay".equalsIgnoreCase(payment.getType()))
+                .toList();
+    }
+
+
 }
