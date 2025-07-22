@@ -109,5 +109,18 @@ public class PaymentService implements IPaymentService {
                 .toList();
     }
 
+    @Override
+    public List<Payment> getByEmail(String email) {
+        List<Payment> payments = paymentRepository.findAll();
+
+        if (payments.isEmpty()) {
+            throw new NotFoundException("No payments found");
+        }
+
+        return payments.stream()
+                .filter(payment -> payment.getFromAccount().equals(email) || payment.getToAccount().equals(email))
+                .toList();
+    }
+
 
 }
