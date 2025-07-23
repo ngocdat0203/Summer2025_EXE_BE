@@ -43,8 +43,13 @@ public class PaymentController {
         return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS, paymentService.getByConsultantIdAndMonth(email, month, year)));
     }
 
-    @GetMapping("/get-by-all-income-in- month")
+    @GetMapping("/get-by-all-income-in-month")
     public ResponseEntity<BaseResponse<List<Payment>>> getByAllIncomeInMonth(@RequestParam int month, @RequestParam int year) {
         return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS, paymentService.getByAllIncomeInMonth(month, year)));
+    }
+
+    @GetMapping("/get-by-email")
+    public ResponseEntity<BaseResponse<List<Payment>>> getByEmail(@RequestParam String email) {
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), BaseMessage.GET_SUCCESS, paymentService.getByEmail(email)));
     }
 }
