@@ -11,6 +11,7 @@ import com.example.lovenhavestopsystem.repository.IConsultantProfileRepository;
 import com.example.lovenhavestopsystem.service.inter.IAppointmentAssignmentService;
 import com.example.lovenhavestopsystem.service.inter.IAppointmentService;
 import com.example.lovenhavestopsystem.user.crud.entity.ConsultantProfiles;
+import com.example.lovenhavestopsystem.user.crud.service.inter.IEmailService;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -24,12 +25,14 @@ public class AppointmentAssignmentService implements IAppointmentAssignmentServi
     private final IAppointmentRepository appointmentRepo;
     private final IConsultantProfileRepository consultantProfileRepo;
     private final IAppointmentService appointmentService;
+    private final IEmailService emailService;
 
-    public AppointmentAssignmentService(IAppointmentAssignmentRepo repo, IAppointmentRepository appointmentRepo, IConsultantProfileRepository consultantProfileRepo, IAppointmentService appointmentService) {
+    public AppointmentAssignmentService(IAppointmentAssignmentRepo repo, IAppointmentRepository appointmentRepo, IConsultantProfileRepository consultantProfileRepo, IAppointmentService appointmentService, IEmailService emailService) {
         this.repo = repo;
         this.appointmentRepo = appointmentRepo;
         this.consultantProfileRepo = consultantProfileRepo;
         this.appointmentService = appointmentService;
+        this.emailService = emailService;
     }
 
 
@@ -51,6 +54,11 @@ public class AppointmentAssignmentService implements IAppointmentAssignmentServi
         assignment.setPaid(false);
         repo.save(assignment);
         appointment.get().setStatus(AppointmentStatus.TAKEN);
+
+
+        emailService.sendMailBookingSuccess(consultantProfile.get().getAccount().getEmail(), assignment.getId(), appointment.get().getService().getName(), assignment.getStartTime().toLocalDate(), assignment.getStartTime().toLocalTime());
+        // Update appointment status
+
         appointmentRepo.save(appointment.get());
     }
 

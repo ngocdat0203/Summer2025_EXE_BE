@@ -1,6 +1,7 @@
 package com.example.lovenhavestopsystem.user.crud.controller;
 
 import com.example.lovenhavestopsystem.core.base.BaseMessage;
+import com.example.lovenhavestopsystem.core.base.BaseResponse;
 import com.example.lovenhavestopsystem.user.crud.service.imple.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,4 +30,6 @@ public class EmailController {
                 HttpStatus.NOT_IMPLEMENTED
         );
     }
+
+
 }
