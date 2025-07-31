@@ -96,6 +96,24 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
+    public Double getByAllTotalIncomeInMonth(int month, int year) {
+        List<Payment> payments = paymentRepository.findAll();
+
+        if (payments.isEmpty()) {
+            throw new NotFoundException("No payments found");
+        }
+
+        // Calculate total income for the specified month and year
+        double totalIncome = payments.stream()
+                .filter(payment -> payment.getPaidAt().getMonthValue() == month && payment.getPaidAt().getYear() == year)
+                .filter(payment -> "Success".equalsIgnoreCase(payment.getStatus()) && "Pay".equalsIgnoreCase(payment.getType()))
+                .mapToDouble(Payment::getAmount)
+                .sum();
+
+        return totalIncome;
+    }
+
+    @Override
     public List<Payment> getByAllIncomeInMonth(int month, int year) {
         List<Payment> payments = paymentRepository.findAll();
 
