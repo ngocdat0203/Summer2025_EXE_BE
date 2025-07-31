@@ -23,6 +23,8 @@ public interface IPaymentService {
     List<Payment> getByConsultantIdAndMonth(String email, int month, int year);
 
 
+    Double getByAllTotalIncomeInMonth(int month, int year);
+
     List<Payment> getByAllIncomeInMonth(int month, int year);
 
     List<Payment> getByEmail(String email);

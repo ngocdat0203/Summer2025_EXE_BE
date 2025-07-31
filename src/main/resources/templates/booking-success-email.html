@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+        h2 {
+            color: #4CAF50;
+        }
+        .info {
+            margin: 20px 0;
+        }
+        .info p {
+            margin: 5px 0;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #777;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Booking Confirmation</h2>
+    <p>Hello <strong th:text="${consultantName}"></strong>,</p>
+    <p>We are pleased to confirm your booking with the following details:</p>
+
+    <div class="info">
+        <p><strong>Booking ID:</strong> <span th:text="${bookingId}"></span></p>
+        <p><strong>Date:</strong> <span th:text="${date}"></span></p>
+        <p><strong>Time:</strong> <span th:text="${time}"></span></p>
+    </div>
+
+    <p>Thank you for choosing our service. We look forward to seeing you!</p>
+
+    <div class="footer">
+        &copy; 2025 Your Company Name. All rights reserved.
+    </div>
+</div>
+</body>
+</html>

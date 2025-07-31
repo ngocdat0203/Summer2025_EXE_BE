@@ -1,6 +1,8 @@
 package com.example.lovenhavestopsystem.user.crud.service.imple;
 
 import com.example.lovenhavestopsystem.core.base.BaseMessage;
+import com.example.lovenhavestopsystem.model.entity.AppointmentAssignment;
+import com.example.lovenhavestopsystem.repository.IAppointmentAssignmentRepo;
 import com.example.lovenhavestopsystem.user.crud.service.inter.IEmailService;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +27,18 @@ public class EmailService implements IEmailService {
 
     @Autowired
     private TemplateEngine templateEngine;
+
+    /**
+     * Gửi email đơn giản
+     *
+     * @param to      Địa chỉ email người nhận
+     * @param subject Tiêu đề email
+     * @param body    Nội dung email
+     * @return true nếu gửi thành công, false nếu có lỗi xảy ra
+     */
+    @Autowired
+    private IAppointmentAssignmentRepo appointmentAssignmentRepo;
+
 
     public boolean sendMail(String to, String subject, String body) {
         MimeMessage message = mailSender.createMimeMessage();
@@ -66,6 +83,20 @@ public class EmailService implements IEmailService {
         } catch (Exception e) {
             e.printStackTrace(); // Ghi log lỗi
         }
+    }
+
+    @Override
+    public void sendMailBookingSuccess(String email, int bookingId, String consultantName, LocalDate date, LocalTime time) {
+
+        String subject = "Booking Confirmation - " + bookingId;
+        Map<String, Object> model = new HashMap<>();
+        model.put("bookingId", bookingId);
+        model.put("consultantName", consultantName);
+        model.put("date", date);
+        model.put("time", time);
+
+        // Gửi mail với template Thymeleaf
+        sendMailWithThymeleafTemplate(email, subject, "booking-success-email", model);
     }
 
 }
