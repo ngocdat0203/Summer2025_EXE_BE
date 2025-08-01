@@ -56,7 +56,7 @@ public class AppointmentAssignmentService implements IAppointmentAssignmentServi
         appointment.get().setStatus(AppointmentStatus.TAKEN);
 
 
-        emailService.sendMailBookingSuccess(consultantProfile.get().getAccount().getEmail(), assignment.getId(), appointment.get().getService().getName(), assignment.getStartTime().toLocalDate(), assignment.getStartTime().toLocalTime());
+        emailService.sendMailBookingSuccess(consultantProfile.get().getAccount().getEmail(), assignment.getId(), appointment.get().getService().getName(), appointment.get().getPreferredTime().toLocalDate(), appointment.get().getPreferredTime().toLocalTime());
         // Update appointment status
 
         appointmentRepo.save(appointment.get());
