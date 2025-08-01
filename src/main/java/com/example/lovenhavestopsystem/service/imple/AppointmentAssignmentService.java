@@ -56,7 +56,7 @@ public class AppointmentAssignmentService implements IAppointmentAssignmentServi
         appointment.get().setStatus(AppointmentStatus.TAKEN);
 
 
-        emailService.sendMailBookingSuccess(consultantProfile.get().getAccount().getEmail(), assignment.getId(), appointment.get().getService().getName(), appointment.get().getPreferredTime().toLocalDate(), appointment.get().getPreferredTime().toLocalTime());
+        emailService.sendMailBookingSuccess(appointment.get().getCustomer().getEmail(), assignment.getId(), assignment.getConsultant().getAccount().getName(), appointment.get().getPreferredTime().toLocalDate(), appointment.get().getPreferredTime().toLocalTime());
         // Update appointment status
 
         appointmentRepo.save(appointment.get());
@@ -75,6 +75,10 @@ public class AppointmentAssignmentService implements IAppointmentAssignmentServi
         int pricePerHour = appointment.getService().getPricePerHour().intValue();
         int totalPrice = pricePerHour * hours;
         appointment.setTotalAmount(totalPrice);
+
+        emailService.sendMailBookingSuccess(appointment.getCustomer().getEmail(), assignment.getAppointment().getId(), assignment.getConsultant().getAccount().getName(),startTime.toLocalDate(), startTime.toLocalTime());
+        // Update appointment status
+
         appointmentRepo.save(appointment);
         appointmentService.updateAppointmentStatus(appointmentId, AppointmentStatus.COMPLETED);
     }
