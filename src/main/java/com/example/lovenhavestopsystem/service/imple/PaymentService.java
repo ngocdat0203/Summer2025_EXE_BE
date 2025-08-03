@@ -90,7 +90,7 @@ public class PaymentService implements IPaymentService {
         }
         return payments.stream()
                 .filter(payment -> payment.getToAccount().equals(email))
-                .filter(payment -> payment.getPaidAt().getMonthValue() == month && payment.getPaidAt().getYear() == year)
+                .filter(payment -> payment.getCreatedTime().getMonthValue() == month && payment.getCreatedTime().getYear() == year)
                 .filter(payment -> "Success".equalsIgnoreCase(payment.getStatus()) && "Pay".equalsIgnoreCase(payment.getType()))
                 .toList();
     }
@@ -105,7 +105,7 @@ public class PaymentService implements IPaymentService {
 
         // Calculate total income for the specified month and year
         double totalIncome = payments.stream()
-                .filter(payment -> payment.getPaidAt().getMonthValue() == month && payment.getPaidAt().getYear() == year)
+                .filter(payment -> payment.getCreatedTime().getMonthValue() == month && payment.getCreatedTime().getYear() == year)
                 .filter(payment -> "Success".equalsIgnoreCase(payment.getStatus()) && "Pay".equalsIgnoreCase(payment.getType()))
                 .mapToDouble(Payment::getAmount)
                 .sum();
@@ -122,7 +122,7 @@ public class PaymentService implements IPaymentService {
         }
 
         return payments.stream()
-                .filter(payment -> payment.getPaidAt().getMonthValue() == month && payment.getPaidAt().getYear() == year)
+                .filter(payment -> payment.getCreatedTime().getMonthValue() == month && payment.getCreatedTime().getYear() == year)
                 .filter(payment -> "Success".equalsIgnoreCase(payment.getStatus()) && "Pay".equalsIgnoreCase(payment.getType()))
                 .toList();
     }
