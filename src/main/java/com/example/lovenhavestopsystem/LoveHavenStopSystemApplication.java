@@ -25,7 +25,7 @@ public class LoveHavenStopSystemApplication {
 
         );
 
-        System.out.println("asdf");
+        System.out.println("asdfádf");
 
 
         SpringApplication.run(LoveHavenStopSystemApplication.class, args);
