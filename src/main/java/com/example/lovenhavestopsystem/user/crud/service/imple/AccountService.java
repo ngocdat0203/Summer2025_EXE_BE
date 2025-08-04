@@ -94,6 +94,11 @@ public class AccountService implements IAccountService {
     @Override
     public void updateInfo(int id, AccountUpdateDTO dto) {
         Account account = accountRepo.findByIdAndDeletedTimeIsNull(id);
+
+        if (account == null) {
+            throw new NotFoundException(BaseMessage.NOT_FOUND);
+        }
+
         if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
             account.setPassword(encoder.encode(dto.getPassword()));
         }

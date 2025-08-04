@@ -24,7 +24,7 @@ public class ChatMessage extends BaseEntity {
     @JsonManagedReference
     private Conversation conversation;
 
-    @Column(name = "message", columnDefinition = "NVARCHAR(MAX)", nullable = false)
+    @Column(name = "message", columnDefinition = "LONGTEXT", nullable = false)
     private String message;
 
     @ManyToOne

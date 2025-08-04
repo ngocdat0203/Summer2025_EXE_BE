@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Booking Confirmation</title>
+    <title>Xác Nhận Đặt Lịch</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -38,20 +38,20 @@
 </head>
 <body>
 <div class="container">
-    <h2>Booking Confirmation</h2>
-    <p>Hello <strong th:text="${consultantName}"></strong>,</p>
-    <p>We are pleased to confirm your booking with the following details:</p>
+    <h2>Xác Nhận Đặt Lịch</h2>
+    <p>Xin chào <strong th:text="${consultantName}"></strong>,</p>
+    <p>Chúng tôi xin xác nhận rằng bạn đã đặt lịch thành công với thông tin như sau:</p>
 
     <div class="info">
-        <p><strong>Booking ID:</strong> <span th:text="${bookingId}"></span></p>
-        <p><strong>Date:</strong> <span th:text="${date}"></span></p>
-        <p><strong>Time:</strong> <span th:text="${time}"></span></p>
+        <p><strong>Mã đặt lịch:</strong> <span th:text="${bookingId}"></span></p>
+        <p><strong>Ngày:</strong> <span th:text="${date}"></span></p>
+        <p><strong>Giờ:</strong> <span th:text="${time}"></span></p>
     </div>
 
-    <p>Thank you for choosing our service. We look forward to seeing you!</p>
+    <p>Cảm ơn bạn đã lựa chọn dịch vụ của chúng tôi. Rất mong được phục vụ bạn!</p>
 
     <div class="footer">
-        &copy; 2025 Your Company Name. All rights reserved.
+        &copy; 2025 Tên Công Ty Của Bạn. Mọi quyền được bảo lưu.
     </div>
 </div>
 </body>
