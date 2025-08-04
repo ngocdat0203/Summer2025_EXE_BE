@@ -25,6 +25,8 @@ public class LoveHavenStopSystemApplication {
 
         );
 
+        System.out.println("asdf");
+
 
         SpringApplication.run(LoveHavenStopSystemApplication.class, args);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
