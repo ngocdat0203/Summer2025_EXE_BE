@@ -16,6 +16,7 @@ public class Feedback extends BaseEntity {
     private String body;
     private String reply;
     private int customerId;
+    private String customerName;
     private int consultantId;
 
 

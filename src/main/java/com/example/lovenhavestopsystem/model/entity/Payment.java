@@ -29,7 +29,7 @@ public class Payment extends BaseEntity {
 
     private String status; //Failed or Success
 
-    private String type; //Pay, Refund, Salary
+    private String  type; //Pay, Refund, Salary
 
     private String fromAccount;
 

@@ -43,6 +43,7 @@ public class FeedbackService implements IFeedbackService {
         }
 
         feedback.setCustomerId(customerId);
+        feedback.setCustomerName(accountRepository.findById(customerId).get().getName());
         feedback.setConsultantId(therapistId);
 
 
