@@ -18,6 +18,8 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,9 +51,11 @@ public class VNPayService implements IVNPayService {
         vnpParams.put("vnp_IpAddr", getClientIp(request));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-        LocalDateTime now = LocalDateTime.now();
-        vnpParams.put("vnp_CreateDate", now.format(formatter));
-        vnpParams.put("vnp_ExpireDate", now.plusMinutes(10).format(formatter));
+        //LocalDateTime now = LocalDateTime.now();
+
+        ZonedDateTime nowVN = ZonedDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+        vnpParams.put("vnp_CreateDate", nowVN.format(formatter));
+        vnpParams.put("vnp_ExpireDate", nowVN.plusMinutes(10).format(formatter));
 
         vnpParams.put("vnp_TxnRef", generateTransactionCode());
 
