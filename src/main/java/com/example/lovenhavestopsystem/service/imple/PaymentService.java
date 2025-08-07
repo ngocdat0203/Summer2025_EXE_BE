@@ -140,5 +140,31 @@ public class PaymentService implements IPaymentService {
                 .toList();
     }
 
+    @Override
+    public List<Payment> getByComeInMonth(int month, int year) {
+        List<Payment> payments = paymentRepository.findAll();
+        if (payments.isEmpty()) {
+            throw new NotFoundException("No payments found");
+        }
+        return payments.stream()
+                .filter(payment -> payment.getCreatedTime().getMonthValue() == month && payment.getCreatedTime().getYear() == year)
+                .filter(payment -> "Success".equalsIgnoreCase(payment.getStatus()) && "Salary".equalsIgnoreCase(payment.getType()))
+                .toList();
+    }
+
+    @Override
+    public Double getByComeTotalInMonth(int month, int year) {
+        List<Payment> payments = paymentRepository.findAll();
+        if (payments.isEmpty()) {
+            throw new NotFoundException("No payments found");
+        }
+        return  payments.stream()
+                .filter(payment -> payment.getCreatedTime().getMonthValue() == month && payment.getCreatedTime().getYear() == year)
+                .filter(payment -> "Success".equalsIgnoreCase(payment.getStatus()) && "Salary".equalsIgnoreCase(payment.getType()))
+                .mapToDouble(Payment::getAmount)
+                .sum();
+
+    }
+
 
 }

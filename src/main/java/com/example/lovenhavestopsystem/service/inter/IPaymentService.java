@@ -29,6 +29,10 @@ public interface IPaymentService {
 
     List<Payment> getByEmail(String email);
 
+    List<Payment> getByComeInMonth(int month, int year);
+
+    Double getByComeTotalInMonth(int month, int year);
+
 
 }
 
