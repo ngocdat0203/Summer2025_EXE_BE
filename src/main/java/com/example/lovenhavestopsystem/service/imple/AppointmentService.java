@@ -14,6 +14,8 @@ import com.example.lovenhavestopsystem.user.crud.reposotory.IAccountRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,12 +53,38 @@ public class AppointmentService implements IAppointmentService {
 
     @Override
     public List<Appointment> getByCustomerId(int id) {
-        return appointmentRepository.getAllByCustomer_Id(id);
+
+        List<Appointment> appointments = appointmentRepository.getAllByCustomer_Id(id);
+
+        if (appointments.isEmpty()) {
+            throw new NotFoundException("No appointments found for the given customer ID");
+        }
+
+        // Sort appointments by created time in descending order
+
+        appointments.sort(Comparator.comparing(Appointment::getCreatedTime).reversed());
+
+        return appointments;
     }
 
     @Override
     public List<Appointment> getByCity(String city) {
-        return appointmentRepository.getAllByCity(city);
+
+        if (city == null || city.isEmpty()) {
+            throw new BadRequestException("City cannot be null or empty");
+        }
+
+        List<Appointment> appointments = appointmentRepository.getAllByCity(city);
+
+        List<Appointment> appointmentList = new ArrayList<>(appointments);
+
+        for (Appointment appointment : appointmentList) {
+            if (appointment.getStatus().equals(AppointmentStatus.DEPOSITED)) {
+                appointmentList.add(appointment);
+            }
+        }
+
+        return appointmentList;
     }
 
     @Override
@@ -69,7 +97,21 @@ public class AppointmentService implements IAppointmentService {
 
     @Override
     public List<Appointment> getAllAppointments() {
-        return appointmentRepository.findAll();
+        if (appointmentRepository.count() == 0) {
+            throw new NotFoundException("No appointments found");
+        }
+
+        List<Appointment> appointments = appointmentRepository.findAll();
+
+        if (appointments.isEmpty()) {
+            throw new NotFoundException("No appointments found");
+        }
+
+        //appointments.sort(Comparator.comparing(appointment -> appointment.getCreatedTime());
+
+        appointments.sort(Comparator.comparing(Appointment::getCreatedTime).reversed());
+
+        return appointments;
     }
 
     @Override

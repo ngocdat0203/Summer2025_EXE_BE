@@ -1,5 +1,6 @@
 package com.example.lovenhavestopsystem.service.imple;
 
+import com.example.lovenhavestopsystem.core.exception.BadRequestException;
 import com.example.lovenhavestopsystem.core.exception.NotFoundException;
 import com.example.lovenhavestopsystem.model.entity.Appointment;
 import com.example.lovenhavestopsystem.model.entity.AppointmentAssignment;
@@ -84,7 +85,7 @@ public class WalletService implements IWalletService {
         int deposit = pricePerHour / 2;
         int remainingAmount = totalPrice - deposit;
 
-        if (wallet.getBalance() < remainingAmount) throw new IllegalStateException("Not enough balance");
+        if (wallet.getBalance() < remainingAmount) throw new BadRequestException("Not enough balance");
 
         wallet.setBalance(wallet.getBalance() - remainingAmount);
         walletRepository.save(wallet);
