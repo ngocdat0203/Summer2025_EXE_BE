@@ -120,7 +120,7 @@ public class EmailService implements IEmailService {
             context.setVariable("remainingAmount", remainingAmount);
 
             // 2. Render HTML từ template
-            String htmlContent = templateEngine.process("xac-nhan-dat-lich", context);
+            String htmlContent = templateEngine.process("kham-success-email", context);
 
             // 3. Gửi mail HTML
             MimeMessage mimeMessage = mailSender.createMimeMessage();
