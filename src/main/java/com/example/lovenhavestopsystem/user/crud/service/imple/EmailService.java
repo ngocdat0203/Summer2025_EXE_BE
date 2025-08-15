@@ -11,9 +11,11 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -98,6 +100,43 @@ public class EmailService implements IEmailService {
         // Gửi mail với template Thymeleaf
         sendMailWithThymeleafTemplate(email, subject, "booking-success-email", model);
     }
+
+    @Override
+    public void sendMailKhamSuccess(String email,
+                                    int bookingId,
+                                    String consultantName,
+                                    LocalDate date,
+                                    LocalTime startTime,
+                                    LocalTime endTime,
+                                    int remainingAmount) {
+        try {
+            // 1. Tạo context Thymeleaf
+            Context context = new Context();
+            context.setVariable("consultantName", consultantName);
+            context.setVariable("bookingId", bookingId);
+            context.setVariable("date", date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            context.setVariable("startTime", startTime.format(DateTimeFormatter.ofPattern("HH:mm")));
+            context.setVariable("endTime", endTime.format(DateTimeFormatter.ofPattern("HH:mm")));
+            context.setVariable("remainingAmount", remainingAmount);
+
+            // 2. Render HTML từ template
+            String htmlContent = templateEngine.process("xac-nhan-dat-lich", context);
+
+            // 3. Gửi mail HTML
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setTo(email);
+            helper.setSubject("Xác nhận đặt lịch #" + bookingId);
+            helper.setText(htmlContent, true); // true => HTML
+
+            mailSender.send(mimeMessage);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Gửi email xác nhận thất bại", e);
+        }
+    }
+
 
 }
 

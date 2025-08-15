@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AppointmentService implements IAppointmentService {
@@ -69,23 +70,22 @@ public class AppointmentService implements IAppointmentService {
 
     @Override
     public List<Appointment> getByCity(String city) {
-
         if (city == null || city.isEmpty()) {
             throw new BadRequestException("City cannot be null or empty");
         }
 
         List<Appointment> appointments = appointmentRepository.getAllByCity(city);
 
-        List<Appointment> appointmentList = new ArrayList<>(appointments);
-
-        for (Appointment appointment : appointmentList) {
-            if (appointment.getStatus().equals(AppointmentStatus.DEPOSITED)) {
-                appointmentList.add(appointment);
-            }
-        }
-
-        return appointmentList;
+        // Lọc trực tiếp bằng stream
+        return appointments.stream()
+                .filter(appointment ->
+                        appointment.getStatus() == AppointmentStatus.DEPOSITED &&
+                                appointment.getPreferredTime() != null &&
+                                appointment.getPreferredTime().isAfter(LocalDateTime.now())
+                )
+                .collect(Collectors.toList());
     }
+
 
     @Override
     public void updateAppointmentStatus(int id, AppointmentStatus status) {

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Xác Nhận Đặt Lịch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+        h2 {
+            color: #4CAF50;
+        }
+        .info {
+            margin: 20px 0;
+        }
+        .info p {
+            margin: 5px 0;
+        }
+        .payment {
+            background-color: #f1f8e9;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #777;
+            text-align: center;
+        }
+        a.payment-link {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+        a.payment-link:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Xác Nhận Đặt Lịch</h2>
+    <p>Xin chào <strong th:text="${consultantName}"></strong>,</p>
+    <p>Chúng tôi xin xác nhận rằng bạn đã đặt lịch thành công với thông tin như sau:</p>
+
+    <div class="info">
+        <p><strong>Mã đặt lịch:</strong> <span th:text="${bookingId}"></span></p>
+        <p><strong>Ngày:</strong> <span th:text="${date}"></span></p>
+        <p><strong>Thời gian:</strong>
+            <span th:text="${startTime}"></span> - <span th:text="${endTime}"></span>
+        </p>
+    </div>
+
+    <div class="payment">
+        <p>Vui lòng truy cập vào hệ thống để thanh toán số tiền còn lại:
+            <strong th:text="${remainingAmount}"></strong> VNĐ.</p>
+        <a class="payment-link" th:href="@{${paymentUrl}}" target="_blank">Thanh Toán Ngay</a>
+    </div>
+
+    <p>Cảm ơn bạn đã lựa chọn dịch vụ của chúng tôi. Rất mong được phục vụ bạn!</p>
+
+    <div class="footer">
+        &copy; 2025 Tên Công Ty Của Bạn. Mọi quyền được bảo lưu.
+    </div>
+</div>
+</body>
+</html>

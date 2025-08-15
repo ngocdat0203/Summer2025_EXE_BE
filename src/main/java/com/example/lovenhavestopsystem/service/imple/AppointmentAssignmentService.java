@@ -76,8 +76,13 @@ public class AppointmentAssignmentService implements IAppointmentAssignmentServi
         int totalPrice = pricePerHour * hours;
         appointment.setTotalAmount(totalPrice);
 
-        emailService.sendMailBookingSuccess(appointment.getCustomer().getEmail(), assignment.getAppointment().getId(), assignment.getConsultant().getAccount().getName(),startTime.toLocalDate(), startTime.toLocalTime());
-        // Update appointment status
+        emailService.sendMailKhamSuccess(appointment.getCustomer().getEmail(),
+                assignment.getId(),
+                assignment.getConsultant().getAccount().getName(),
+                appointment.getPreferredTime().toLocalDate(),
+                startTime.toLocalTime(),
+                endTime.toLocalTime(),
+                totalPrice - (pricePerHour / 2)); // Assuming deposit is half of the total price
 
         appointmentRepo.save(appointment);
         appointmentService.updateAppointmentStatus(appointmentId, AppointmentStatus.COMPLETED);
